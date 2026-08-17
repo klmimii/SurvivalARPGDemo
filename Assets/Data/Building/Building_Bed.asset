@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26b025160895ea4ea07d68a9fdbe795, type: 3}
+  m_Name: Building_Bed
+  m_EditorClassIdentifier: 
+  buildingId: bed
+  displayName: "\u5E8A"
+  icon: {fileID: 21300000, guid: e986d57309beefe4399fc5e9313219ed, type: 3}
+  pieceType: 2
+  buildingPrefab: {fileID: 7058803875569445064, guid: c2fad901d4372304d9f285c8a2ca8722,
+    type: 3}
+  previewPrefab: {fileID: 7058803875569445064, guid: aa8201d26a0f8014c85ca8d9c416de53,
+    type: 3}
+  costs:
+  - item: {fileID: 11400000, guid: 001df0b2a81fbdb42ab003786a6b87a6, type: 2}
+    amount: 4
+  - item: {fileID: 11400000, guid: f20726e44e72d504f98d5f1b54bf7a50, type: 2}
+    amount: 2
+  refundRate: 1
+  requiredKit: {fileID: 11400000, guid: d460bd9542e0cd144a55bc44d6367b79, type: 2}
+  allowedSurfaces: 2
+  allowSnapping: 0
+  requireSnap: 0
+  snapSearchRadius: 0.8
+  gridSize: 0.25
+  boundsCenter: {x: 0, y: 0.4, z: 0}
+  boundsSize: {x: 1.5, y: 0.8, z: 2.5}
+  boundsSkin: 0.01

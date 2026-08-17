@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26b025160895ea4ea07d68a9fdbe795, type: 3}
+  m_Name: Building_Campfire
+  m_EditorClassIdentifier: 
+  buildingId: campfire
+  displayName: "\u7BDD\u706B"
+  icon: {fileID: 21300000, guid: 05529d0e5bfb38b4d8caaa3cdc73a15f, type: 3}
+  pieceType: 3
+  buildingPrefab: {fileID: 6912379716603675317, guid: c842c729bd5be24449f696f35168a050,
+    type: 3}
+  previewPrefab: {fileID: 944511148125988884, guid: add22c7f798317740939403b86e751c2,
+    type: 3}
+  costs:
+  - item: {fileID: 11400000, guid: 001df0b2a81fbdb42ab003786a6b87a6, type: 2}
+    amount: 2
+  - item: {fileID: 11400000, guid: 97caac76ee52cff44b2adcc3c6c855ad, type: 2}
+    amount: 2
+  refundRate: 1
+  requiredKit: {fileID: 11400000, guid: fbd5aa1252f3a4a4fb76f4d9eddd7259, type: 2}
+  allowedSurfaces: -1
+  allowSnapping: 1
+  requireSnap: 0
+  snapSearchRadius: 0.8
+  gridSize: 0.25
+  boundsCenter: {x: 0, y: 0.5, z: 0}
+  boundsSize: {x: 1, y: 1, z: 1}
+  boundsSkin: 0.01

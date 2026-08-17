@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a92af24bbc274b4abae6561642e0851, type: 3}
+  m_Name: Recipe_CampfireKit
+  m_EditorClassIdentifier: 
+  recipeId: campfire_kit
+  displayName: "\u7BDD\u706B\u5957\u4EF6"
+  description: 
+  ingredients:
+  - item: {fileID: 11400000, guid: 001df0b2a81fbdb42ab003786a6b87a6, type: 2}
+    amount: 2
+  - item: {fileID: 11400000, guid: 97caac76ee52cff44b2adcc3c6c855ad, type: 2}
+    amount: 2
+  outputItem: {fileID: 11400000, guid: fbd5aa1252f3a4a4fb76f4d9eddd7259, type: 2}
+  outputAmount: 1

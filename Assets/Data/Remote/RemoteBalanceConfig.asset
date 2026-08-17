@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2b6149ffd5a9d14cb46f5c1945e17c1, type: 3}
+  m_Name: RemoteBalanceConfig
+  m_EditorClassIdentifier: 
+  bossHealthMultiplier: 1
+  bossDamageMultiplier: 1.2
+  updateNote: "Boss \u72C2\u66B4\u4F24\u5BB3\u4E0A\u8C03 20%"

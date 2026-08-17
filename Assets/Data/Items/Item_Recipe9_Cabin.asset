@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a19cf5894ba2f429091f91162cd407, type: 3}
+  m_Name: Item_Recipe9_Cabin
+  m_EditorClassIdentifier: 
+  itemId: recipe4_sunlight
+  displayName: "\u6728\u5C4B\u914D\u65B9"
+  description: "\u5C0F\u578B\u6728\u5C4B\u5B8C\u6574\u5EFA\u9020\u56FE\u7EB8\u3002\u6D88\u8017\u5927\u91CF\u6728\u6750\u77F3\u6599\uFF0C\u5408\u6210\u5957\u4EF6\uFF0C\u653E\u7F6E\u751F\u6210\u5B89\u5168\u5C0F\u5C4B\u3002"
+  icon: {fileID: 21300000, guid: 5594d75b7263c1b4ba41c607161b7bed, type: 3}
+  category: 6
+  sortOrder: 609
+  maxStack: 1
+  itemType: 0
+  healAmount: 0

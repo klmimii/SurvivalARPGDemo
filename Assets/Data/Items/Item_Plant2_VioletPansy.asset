@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a19cf5894ba2f429091f91162cd407, type: 3}
+  m_Name: Item_Plant2_VioletPansy
+  m_EditorClassIdentifier: 
+  itemId: plant2_violetPansy
+  displayName: "\u7D2B\u5807\u82B1"
+  description: "\u82AC\u82B3\u7684\u7D2B\u8272\u91CE\u82B1\u3002\u662F\u70BC\u5236\u589E\u76CA\u836F\u6C34\u7684\u91CD\u8981\u8349\u672C\u6750\u6599\u3002"
+  icon: {fileID: 21300000, guid: c2679d4324fe61b4fbd67bfb0110fd14, type: 3}
+  category: 2
+  sortOrder: 202
+  maxStack: 99
+  itemType: 0
+  healAmount: 0

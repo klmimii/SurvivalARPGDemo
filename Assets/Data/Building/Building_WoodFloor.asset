@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26b025160895ea4ea07d68a9fdbe795, type: 3}
+  m_Name: Building_WoodFloor
+  m_EditorClassIdentifier: 
+  buildingId: wooden_floor
+  displayName: "\u6728\u5730\u677F"
+  icon: {fileID: 21300000, guid: 6f95ac1fe9a5121438998df91a045e55, type: 3}
+  pieceType: 0
+  buildingPrefab: {fileID: 3474640339297712228, guid: 704b1841c6854254590b13d6c6262995,
+    type: 3}
+  previewPrefab: {fileID: 3474640339297712228, guid: 78b4b48fe19bd944eb271416295395cc,
+    type: 3}
+  costs:
+  - item: {fileID: 11400000, guid: 4c189eb2dbdb44b40809d6c8ba85e45f, type: 2}
+    amount: 2
+  refundRate: 1
+  requiredKit: {fileID: 11400000, guid: 9e084b9ef8e245546b4f91e83ab93377, type: 2}
+  allowedSurfaces: -1
+  allowSnapping: 1
+  requireSnap: 0
+  snapSearchRadius: 1.5
+  gridSize: 0.25
+  boundsCenter: {x: 0, y: 0.1, z: 0}
+  boundsSize: {x: 2, y: 0.2, z: 2}
+  boundsSkin: 0.015

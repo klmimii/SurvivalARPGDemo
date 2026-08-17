@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b7f68c122d423d4991c3cf7a92e1cc4, type: 3}
+  m_Name: Quest_EstablishCamp
+  m_EditorClassIdentifier: 
+  questId: establish_camp
+  title: "\u5EFA\u7ACB\u8425\u5730"
+  description: "\u6536\u96C6\u8D44\u6E90\uFF0C\u5236\u4F5C\u7BDD\u706B\u5957\u4EF6\u5E76\u5EFA\u7ACB\u7B2C\u4E00\u5904\u8425\u5730\u3002"
+  objectives:
+  - type: 0
+    targetId: wood
+    requiredCount: 10
+    description: "\u83B7\u5F97\u6728\u6750"
+  - type: 1
+    targetId: goblin
+    requiredCount: 2
+    description: "\u51FB\u8D25\u54E5\u5E03\u6797"
+  - type: 2
+    targetId: campfire_kit
+    requiredCount: 1
+    description: "\u5236\u4F5C\u7BDD\u706B\u5957\u4EF6"
+  - type: 3
+    targetId: campfire
+    requiredCount: 1
+    description: "\u653E\u7F6E\u7BDD\u706B\u5957\u4EF6"
+  rewards:
+  - item: {fileID: 11400000, guid: e7efc72acffca624e867d642dd1f2b92, type: 2}
+    amount: 3

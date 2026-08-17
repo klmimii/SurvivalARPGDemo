@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a19cf5894ba2f429091f91162cd407, type: 3}
+  m_Name: Item_Mineral6_Amethyst
+  m_EditorClassIdentifier: 
+  itemId: mineral6_amethyst
+  displayName: "\u7D2B\u6676\u77F3"
+  description: "\u6CDB\u7740\u7D2B\u5149\u7684\u6C34\u6676\u77FF\u77F3\u3002\u8574\u542B\u5FAE\u5F31\u9B54\u529B\uFF0C\u53EF\u7528\u4E8E\u9B54\u6CD5\u76F8\u5173\u5236\u4F5C\uFF0C\u4EF7\u503C\u4E0D\u83F2\u3002"
+  icon: {fileID: 21300000, guid: f74392a5533367d44a98ab2ce25de4ee, type: 3}
+  category: 3
+  sortOrder: 306
+  maxStack: 99
+  itemType: 0
+  healAmount: 0

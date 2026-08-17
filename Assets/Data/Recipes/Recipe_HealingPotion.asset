@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a92af24bbc274b4abae6561642e0851, type: 3}
+  m_Name: Recipe_HealingPotion
+  m_EditorClassIdentifier: 
+  recipeId: campfire_kit
+  displayName: "\u56DE\u590D\u836F\u6C34"
+  description: 
+  ingredients:
+  - item: {fileID: 11400000, guid: 6f053d30238f5cc4691a329616fe9ed2, type: 2}
+    amount: 2
+  - item: {fileID: 11400000, guid: 1fd90fbcdd270604e82f2f18f62a14c2, type: 2}
+    amount: 1
+  outputItem: {fileID: 11400000, guid: e7efc72acffca624e867d642dd1f2b92, type: 2}
+  outputAmount: 1

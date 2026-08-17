@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b7f68c122d423d4991c3cf7a92e1cc4, type: 3}
+  m_Name: Quest_DefeatGuardian
+  m_EditorClassIdentifier: 
+  questId: defeat_guardian
+  title: "\u51FB\u8D25\u68EE\u6797\u5B88\u536B"
+  description: 
+  objectives:
+  - type: 4
+    targetId: forest_guardian
+    requiredCount: 1
+    description: 
+  rewards:
+  - item: {fileID: 11400000, guid: 1fd90fbcdd270604e82f2f18f62a14c2, type: 2}
+    amount: 5
