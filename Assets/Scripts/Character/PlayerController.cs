@@ -46,38 +46,58 @@ public class PlayerController : MonoBehaviour
     private float dodgeEndTime;
     private float nextDodgeTime;
 
+    private bool acceptLocalInput;
+    private bool inputBound;
+
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
     }
-
     private void OnEnable()
     {
-        moveAction.action.Enable();
-        sprintAction.action.Enable();
-        jumpAction.action.Enable();
-        dodgeAction.action.Enable();
-        jumpAction.action.performed += OnJump;
-        dodgeAction.action.performed += OnDodge;
+        if (acceptLocalInput)
+        {
+            BindInput();
+        }
     }
 
     private void OnDisable()
     {
-        jumpAction.action.performed -= OnJump;
-        dodgeAction.action.performed -= OnDodge;
-        moveAction.action.Disable();
-        sprintAction.action.Disable();
-        jumpAction.action.Disable();
-        dodgeAction.action.Disable();
+        UnbindInput();
     }
+
+    //private void OnEnable()
+    //{
+    //    moveAction.action.Enable();
+    //    sprintAction.action.Enable();
+    //    jumpAction.action.Enable();
+    //    dodgeAction.action.Enable();
+    //    jumpAction.action.performed += OnJump;
+    //    dodgeAction.action.performed += OnDodge;
+    //}
+
+    //private void OnDisable()
+    //{
+    //    jumpAction.action.performed -= OnJump;
+    //    dodgeAction.action.performed -= OnDodge;
+    //    moveAction.action.Disable();
+    //    sprintAction.action.Disable();
+    //    jumpAction.action.Disable();
+    //    dodgeAction.action.Disable();
+    //}
 
     private void Update()
     {
-        if (GameBootstrap.InputMode != null && !GameBootstrap.InputMode.IsGameplay())
+        if (!CanHandleGameplayInput())
         {
             NormalizedMoveSpeed = 0f;
             return;
         }
+        //if (GameBootstrap.InputMode != null && !GameBootstrap.InputMode.IsGameplay())
+        //{
+        //    NormalizedMoveSpeed = 0f;
+        //    return;
+        //}
 
         UpdateGravity();
 
@@ -172,27 +192,124 @@ public class PlayerController : MonoBehaviour
         characterController.Move(finalMove * Time.deltaTime);
     }
 
+    //private Vector3 GetCameraRelativeDirection(Vector2 input)
+    //{
+    //    Vector3 forward = cameraTransform.forward;
+    //    Vector3 right = cameraTransform.right;
+    //    forward.y = 0f;
+    //    right.y = 0f;
+    //    forward.Normalize();
+    //    right.Normalize();
+
+    //    return Vector3.ClampMagnitude(forward * input.y + right * input.x, 1f);
+    //}
     private Vector3 GetCameraRelativeDirection(Vector2 input)
     {
-        Vector3 forward = cameraTransform.forward;
-        Vector3 right = cameraTransform.right;
+        // 网络玩家刚生成而相机尚未绑定时，先使用角色自身方向，
+        // 避免 cameraTransform.forward 产生 NullReferenceException。
+        Transform reference = cameraTransform != null
+            ? cameraTransform
+            : transform;
+
+        Vector3 forward = reference.forward;
+        Vector3 right = reference.right;
         forward.y = 0f;
         right.y = 0f;
         forward.Normalize();
         right.Normalize();
 
-        return Vector3.ClampMagnitude(forward * input.y + right * input.x, 1f);
+        return Vector3.ClampMagnitude(
+            forward * input.y + right * input.x,
+            1f);
     }
+
+    //private bool CanHandleGameplayInput()
+    //{
+    //    return GameBootstrap.InputMode == null || GameBootstrap.InputMode.IsGameplay();
+    //}
 
     private bool CanHandleGameplayInput()
     {
-        return GameBootstrap.InputMode == null || GameBootstrap.InputMode.IsGameplay();
+        return acceptLocalInput &&
+               (GameBootstrap.InputMode == null ||
+                GameBootstrap.InputMode.IsGameplay());
+    }
+
+    public void SetAcceptLocalInput(bool value)
+    {
+        if (acceptLocalInput == value)
+        {
+            return;
+        }
+
+        acceptLocalInput = value;
+
+        if (!isActiveAndEnabled)
+        {
+            return;
+        }
+
+        if (acceptLocalInput)
+        {
+            BindInput();
+        }
+        else
+        {
+            UnbindInput();
+            NormalizedMoveSpeed = 0f;
+            IsRunning = false;
+        }
+    }
+
+    private void BindInput()
+    {
+        if (inputBound)
+        {
+            return;
+        }
+
+        moveAction.action.Enable();
+        sprintAction.action.Enable();
+        jumpAction.action.Enable();
+        dodgeAction.action.Enable();
+
+        jumpAction.action.performed += OnJump;
+        dodgeAction.action.performed += OnDodge;
+
+        inputBound = true;
+    }
+
+    private void UnbindInput()
+    {
+        if (!inputBound)
+        {
+            return;
+        }
+
+        jumpAction.action.performed -= OnJump;
+        dodgeAction.action.performed -= OnDodge;
+
+        moveAction.action.Disable();
+        sprintAction.action.Disable();
+        jumpAction.action.Disable();
+        dodgeAction.action.Disable();
+
+        inputBound = false;
     }
 
     // PartyController 在切换角色时会调用此方法。
     public void SetMoveSpeed(float value)
     {
         walkSpeed = Mathf.Max(0f, value);
+    }
+
+    /// <summary>
+    /// 网络玩家生成后，由 NetworkPlayer 把本机 Main Camera 传进来。
+    /// Prefab 不能直接保存对场景相机的引用。
+    /// </summary>
+    public void SetCameraTransform(Transform value)
+    {
+        cameraTransform = value;
     }
 }
 

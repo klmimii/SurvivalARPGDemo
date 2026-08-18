@@ -184,4 +184,14 @@ public class ThirdPersonCamera : MonoBehaviour
         Vector3 localOffset = new Vector3(x, y, 0f) * currentStrength;
         return cameraRotation * localOffset;
     }
+
+    /// <summary>
+    /// 本机网络玩家生成后重新指定跟随目标。
+    /// 传入 null 时停止跟随。
+    /// </summary>
+    public void SetTarget(Transform value)
+    {
+        target = value;
+        velocity = Vector3.zero;
+    }
 }

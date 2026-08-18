@@ -52,6 +52,12 @@ public sealed class RelayConnectionView : MonoBehaviour
         currentHostJoinCode = joinCode ?? string.Empty;
 
         bool hasCode = !string.IsNullOrWhiteSpace(currentHostJoinCode);
+
+        if (hasCode)
+        {
+            GUIUtility.systemCopyBuffer = currentHostJoinCode;
+        }
+
         hostJoinCodeText.text = hasCode
             ? "加入码：" + currentHostJoinCode
             : "加入码：尚未创建";

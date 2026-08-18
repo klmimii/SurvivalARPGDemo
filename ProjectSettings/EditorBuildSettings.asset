@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/DemoScene_01.unity
     guid: e8f255587bc74fc4abe4ff14a17a16fb
-  - enabled: 1
+  - enabled: 0
     path: Assets/NetworkTutorial/Scenes/NetworkTestScene.unity
     guid: ab378b4084de17c4499a13a9a5361df2
+  - enabled: 1
+    path: Assets/NetworkTutorial/Scenes/NetworkGameplayScene.unity
+    guid: 8a24cab6852007f4bba6194fb7296082
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: bf427d9203279fc4f844be3b7a458ed2,
       type: 2}

@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 /// <summary>
 /// MVP中的Presenter：连接View事件与RelaySessionService。
 /// </summary>
@@ -7,6 +7,10 @@ public sealed class RelayConnectionPresenter : MonoBehaviour
 {
     [SerializeField] private RelayConnectionView view;
     [SerializeField] private RelaySessionService sessionService;
+
+    [SerializeField] private CanvasGroup connectionCanvasGroup;
+
+    private bool menuVisible = true;
 
     private void Start()
     {
@@ -19,6 +23,11 @@ public sealed class RelayConnectionPresenter : MonoBehaviour
         sessionService.JoinCodeChanged += view.SetJoinCode;
         sessionService.BusyChanged += OnBusyChanged;
         sessionService.SessionStateChanged += OnSessionStateChanged;
+
+        if (GameBootstrap.InputMode != null)
+        {
+            GameBootstrap.InputMode.SetMode(GameInputMode.UI);
+        }
 
         // 连接页面需要操作按钮和输入框，因此显示鼠标。
         Cursor.visible = true;
@@ -45,6 +54,46 @@ public sealed class RelayConnectionPresenter : MonoBehaviour
             sessionService.JoinCodeChanged -= view.SetJoinCode;
             sessionService.BusyChanged -= OnBusyChanged;
             sessionService.SessionStateChanged -= OnSessionStateChanged;
+        }
+    }
+
+    private void Update()
+    {
+        if (!sessionService.HasSession || Keyboard.current == null)
+        {
+            return;
+        }
+
+        if (Keyboard.current.f1Key.wasPressedThisFrame)
+        {
+            SetMenuVisible(!menuVisible);
+        }
+    }
+
+    private void SetMenuVisible(bool visible)
+    {
+        menuVisible = visible;
+
+        if (connectionCanvasGroup != null)
+        {
+            connectionCanvasGroup.alpha = visible ? 1f : 0f;
+            connectionCanvasGroup.interactable = visible;
+            connectionCanvasGroup.blocksRaycasts = visible;
+        }
+
+        if (GameBootstrap.InputMode != null)
+        {
+            GameBootstrap.InputMode.SetMode(
+                visible
+                    ? GameInputMode.UI
+                    : GameInputMode.Gameplay);
+        }
+        else
+        {
+            Cursor.visible = visible;
+            Cursor.lockState = visible
+                ? CursorLockMode.None
+                : CursorLockMode.Locked;
         }
     }
 
@@ -76,5 +125,8 @@ public sealed class RelayConnectionPresenter : MonoBehaviour
     private void OnSessionStateChanged(bool active)
     {
         view.RestoreButtons(active, sessionService.IsBusy);
+
+        // 连接成功后隐藏；离开世界后重新显示。
+        SetMenuVisible(!active);
     }
 }

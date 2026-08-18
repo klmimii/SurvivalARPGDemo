@@ -18,6 +18,10 @@ public class PartyController : MonoBehaviour
 
     [SerializeField] private PlayerAnimationController animationController;
 
+    private bool acceptLocalInput = true;
+
+    public int ActiveIndex => activeIndex;
+
     public CharacterDefinition ActiveMember { get; private set; }
     public event Action<CharacterDefinition> ActiveMemberChanged;//当角色切换完成时，他会向外广播，比如UI系统的头像需要跟着变，UI脚本只需要订阅者个事件即可
 
@@ -55,6 +59,12 @@ public class PartyController : MonoBehaviour
     /// <param name="context"></param>
     private void OnSwitchCharacter(InputAction.CallbackContext context)
     {
+        // 远端玩家只显示角色，不读取这台电脑的切人按键。
+        if (!acceptLocalInput)
+        {
+            return;
+        }
+
         //如果是Ui模式 禁止切人
         if (GameBootstrap.InputMode != null && !GameBootstrap.InputMode.IsGameplay())
         {
@@ -110,5 +120,9 @@ public class PartyController : MonoBehaviour
 
         //通知全游戏现在换人了，并告知换的是谁
         ActiveMemberChanged?.Invoke(ActiveMember);
+    }
+    public void SetAcceptLocalInput(bool value)
+    {
+        acceptLocalInput = value;
     }
 }
