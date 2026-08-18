@@ -1,17 +1,16 @@
 %YAML 1.1
-%TAG !u! tag:yousandi.cn,2023:
+%TAG !u! tag:unity3d.com,2011:
 --- !u!1 &4117954413154476665
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 7395346762121995631}
   - component: {fileID: 4423574549714898082}
   m_Layer: 7
-  m_HasEditorInfo: 1
   m_Name: CollisionRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,12 +61,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 882530690729071973}
   - component: {fileID: 9134429368990014095}
   m_Layer: 7
-  m_HasEditorInfo: 1
   m_Name: Gtherable_Tree3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,11 +101,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90caf35544f5e2e4b9034a30121f4953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rewardItem: {fileID: 0}
-  rewardAmount: 2
+  rewardItem: {fileID: 11400000, guid: 4c189eb2dbdb44b40809d6c8ba85e45f, type: 2}
+  rewardAmount: 10
   refreshSeconds: 20
   visualRoot: {fileID: 4835850295225610335}
   interactionCollider: {fileID: 4423574549714898082}
+  saveId: tree_003
 --- !u!1001 &4835108061216203451
 PrefabInstance:
   m_ObjectHideFlags: 0

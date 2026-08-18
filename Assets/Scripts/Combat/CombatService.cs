@@ -62,6 +62,34 @@ public static class CombatService
 
         return true;
     }
+
+    /// <summary>
+    /// 网络层已经完成伤害计算后，只发布本地表现事件。
+    /// 这里不会再次扣血。
+    /// </summary>
+    public static void PublishNetworkDamage(
+        Component targetComponent,
+        int appliedDamage)
+    {
+        if (targetComponent == null || appliedDamage <= 0)
+        {
+            return;
+        }
+
+        CombatantIdentity identity =
+            targetComponent.GetComponentInParent<CombatantIdentity>();
+
+        Vector3 feedbackPosition = identity != null
+            ? identity.FeedbackPosition
+            : targetComponent.transform.position;
+
+        DamageApplied?.Invoke(new CombatDamageEvent(
+            targetComponent,
+            identity,
+            feedbackPosition,
+            appliedDamage,
+            appliedDamage));
+    }
 }
 
 //using System.Collections;

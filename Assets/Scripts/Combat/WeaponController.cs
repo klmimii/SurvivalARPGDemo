@@ -49,6 +49,7 @@ public class WeaponController : MonoBehaviour
 
     /// <summary>本机开始攻击动画时广播，用于通知远端播放同类动画。</summary>
     public event Action<WeaponType> AttackStarted;
+    private NetworkPlayerCombat networkCombat;
 
     private void Awake()
     {
@@ -414,6 +415,12 @@ public class WeaponController : MonoBehaviour
 
     private void PerformMeleeAttack(WeaponDefinition weapon)
     {
+        if (networkCombat != null && networkCombat.IsSpawned)
+        {
+            networkCombat.RequestMeleeHit(weapon);
+            return;
+        }
+
         Collider[] hits = Physics.OverlapSphere(
             attackPoint.position,
             weapon.attackRadius,
@@ -441,6 +448,12 @@ public class WeaponController : MonoBehaviour
     WeaponDefinition weapon,
     Vector3 targetPoint)
     {
+        if (networkCombat != null && networkCombat.IsSpawned)
+        {
+            networkCombat.RequestBowShot(weapon, targetPoint);
+            return;
+        }
+
         if (weapon.projectilePrefab == null)
         {
             Debug.LogWarning(
@@ -525,6 +538,11 @@ public class WeaponController : MonoBehaviour
     {
         gameplayCamera = cameraValue;
         thirdPersonCamera = controllerValue;
+    }
+
+    public void SetNetworkCombat(NetworkPlayerCombat value)
+    {
+        networkCombat = value;
     }
 
 }

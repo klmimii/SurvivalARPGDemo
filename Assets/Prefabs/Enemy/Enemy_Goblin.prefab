@@ -1525,6 +1525,7 @@ GameObject:
   - component: {fileID: 1351113386529511994}
   - component: {fileID: 6968128669428007266}
   - component: {fileID: 4096395479814029527}
+  - component: {fileID: 3926981475825101398}
   m_Layer: 6
   m_Name: Enemy_Goblin
   m_TagString: Untagged
@@ -1694,6 +1695,7 @@ MonoBehaviour:
   attackRange: 1.7
   patrolWaitSeconds: 1.2
   returnStopDistance: 0.25
+  thinkInterval: 0.15
 --- !u!114 &5889468396829820865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1768,8 +1770,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anchor: {fileID: 6413706994662748424}
-  proximityDistance: 7
+  proximityDistance: 15
   damagedVisibleDuration: 4
+--- !u!114 &3926981475825101398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7816995090485979933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccd90bb973c8a0e4ea72e6b2e4859366, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyAI: {fileID: 0}
 --- !u!1 &7832069125434362079
 GameObject:
   m_ObjectHideFlags: 0

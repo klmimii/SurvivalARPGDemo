@@ -11,6 +11,11 @@ public class EnemyCombat : MonoBehaviour
     private float nextAttackTime;
     private Transform pendingTarget;
 
+    private void OnEnable()
+    {
+        
+    }
+
     public bool TryAttack(Transform target)
     {
         if (target == null || pendingTarget != null || Time.time < nextAttackTime)

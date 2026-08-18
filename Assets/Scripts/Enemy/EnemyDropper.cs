@@ -11,6 +11,11 @@ public class EnemyDropper : MonoBehaviour
     [SerializeField]
     private int dropAmount = 1;
 
+    private void OnEnable()
+    {
+        
+    }
+
     public void Drop()
     {
         if (pickupPrefab == null||dropItem==null)

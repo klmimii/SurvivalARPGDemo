@@ -149,6 +149,9 @@ public sealed class NetworkPlayer : NetworkBehaviour
             localWeaponController.SetCameraReferences(
                 mainCamera,
                 cameraController);
+
+            localWeaponController.SetNetworkCombat(
+    GetComponent<NetworkPlayerCombat>());
         }
         // 强制重新执行 OnEnable：锁定并隐藏鼠标，
         // 同时确保刚刚创建的本机玩家成为当前目标。

@@ -60,6 +60,8 @@ public sealed class NetworkPlayerState : NetworkBehaviour
     public int MaxHealth => maxHealth.Value;
     public bool IsDead => currentHealth.Value <= 0;
 
+    // 第7册服务器战斗校验使用。
+    public int CurrentWeaponIndex => weaponIndex.Value;
     public override void OnNetworkSpawn()
     {
         characterIndex.OnValueChanged += OnCharacterIndexChanged;
