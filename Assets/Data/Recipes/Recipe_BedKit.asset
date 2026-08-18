@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a92af24bbc274b4abae6561642e0851, type: 3}
   m_Name: Recipe_BedKit
   m_EditorClassIdentifier: 
-  recipeId: 
-  displayName: 
+  recipeId: bed_kit
+  displayName: "\u5E8A\u5957\u4EF6"
   description: 
-  ingredients: []
-  outputItem: {fileID: 0}
+  unlockItem: {fileID: 0}
+  ingredients:
+  - item: {fileID: 11400000, guid: 001df0b2a81fbdb42ab003786a6b87a6, type: 2}
+    amount: 4
+  - item: {fileID: 11400000, guid: f20726e44e72d504f98d5f1b54bf7a50, type: 2}
+    amount: 2
+  outputItem: {fileID: 11400000, guid: d460bd9542e0cd144a55bc44d6367b79, type: 2}
   outputAmount: 1

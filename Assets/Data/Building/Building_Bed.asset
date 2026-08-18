@@ -20,13 +20,11 @@ MonoBehaviour:
     type: 3}
   previewPrefab: {fileID: 7058803875569445064, guid: aa8201d26a0f8014c85ca8d9c416de53,
     type: 3}
-  costs:
-  - item: {fileID: 11400000, guid: 001df0b2a81fbdb42ab003786a6b87a6, type: 2}
-    amount: 4
-  - item: {fileID: 11400000, guid: f20726e44e72d504f98d5f1b54bf7a50, type: 2}
-    amount: 2
-  refundRate: 1
   requiredKit: {fileID: 11400000, guid: d460bd9542e0cd144a55bc44d6367b79, type: 2}
+  craftingRecipe: {fileID: 11400000, guid: 4140c5dd9b2fc204a9488ee2e78eb7da, type: 2}
+  allowIngredientFallback: 1
+  costs: []
+  refundRate: 1
   allowedSurfaces: 2
   allowSnapping: 0
   requireSnap: 0

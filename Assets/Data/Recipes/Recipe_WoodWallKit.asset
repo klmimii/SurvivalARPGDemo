@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a92af24bbc274b4abae6561642e0851, type: 3}
   m_Name: Recipe_WoodWallKit
   m_EditorClassIdentifier: 
-  recipeId: 
-  displayName: 
+  recipeId: woodWall_kit
+  displayName: "\u6728\u5899\u5957\u4EF6"
   description: 
-  ingredients: []
-  outputItem: {fileID: 0}
+  unlockItem: {fileID: 0}
+  ingredients:
+  - item: {fileID: 11400000, guid: 4c189eb2dbdb44b40809d6c8ba85e45f, type: 2}
+    amount: 2
+  outputItem: {fileID: 11400000, guid: fcb6108f8ed69a74ca2e0e1f38b51455, type: 2}
   outputAmount: 1

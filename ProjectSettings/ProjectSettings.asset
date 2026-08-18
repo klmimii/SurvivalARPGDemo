@@ -1,12 +1,11 @@
 %YAML 1.1
-%TAG !u! tag:yousandi.cn,2023:
+%TAG !u! tag:unity3d.com,2011:
 --- !u!129 &1
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 26
   productGUID: 41637fc9f197f5546973410507c6d50a
   AndroidProfiler: 0
-  hmiUseInternalProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
   defaultScreenOrientation: 4
@@ -42,8 +41,6 @@ PlayerSettings:
     height: 1
   m_SplashScreenLogos: []
   m_VirtualRealitySplashScreen: {fileID: 0}
-  expectedBundleIdentifier: com.Unity-Technologies.com.unity.template.urp-blank
-  integrityHash: 
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1024
   defaultScreenHeight: 768
@@ -72,8 +69,6 @@ PlayerSettings:
   androidStartInFullscreen: 1
   androidRenderOutsideSafeArea: 1
   androidUseSwappy: 0
-  androidDisableUnityAndroidVSync: 0
-  useSRGBBackBuffer: 1
   androidBlitType: 0
   androidResizableWindow: 0
   androidDefaultWindowWidth: 1920
@@ -82,9 +77,6 @@ PlayerSettings:
   androidMinimumWindowHeight: 300
   androidFullscreenMode: 1
   androidAutoRotationBehavior: 1
-  androidUrasMode: 0
-  disableBluetoothAudioUpdate: 0
-  androidEnableSensors: 0
   androidPredictiveBackSupport: 0
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
@@ -98,24 +90,14 @@ PlayerSettings:
   hideHomeButton: 0
   submitAnalytics: 1
   usePlayerLog: 1
-  autoStreaming: 0
-  useFontStreaming: 0
-  cacheASTextureAB: 0
-  maxCacheSize: 0
-  maxConcurrentLoad: 0
-  autoStreamingId: 
-  instantGameAppId: 
   dedicatedServerOptimizations: 0
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
   useFlipModelSwapchain: 1
   resizableWindow: 0
   useMacAppStoreValidation: 0
-  wglDisableFBODepthStencil: 0
   macAppStoreCategory: public.app-category.games
   gpuSkinning: 1
-  gpuSkinningTransformFeedback: 0
-  vertexShaderSkinning: 0
   xboxPIXTextureCapture: 0
   xboxEnableAvatar: 0
   xboxEnableKinect: 0
@@ -149,17 +131,6 @@ PlayerSettings:
   switchNVNMaxPublicSamplerIDCount: 0
   switchNVNGraphicsFirmwareMemory: 32
   switchMaxWorkerMultiple: 8
-  openHarmonyStartInFullscreen: 1
-  openHarmonyRenderOutsideSafeArea: 1
-  openHarmonyResizableWindow: 0
-  openHarmonyEnableLowLatencyAudio: 1
-  openHarmonyFullscreenMode: 1
-  openHarmonyAutoRotationBehavior: 1
-  openHarmonyBlitType: 0
-  openHarmonyDefaultWindowWidth: 1920
-  openHarmonyDefaultWindowHeight: 1080
-  openHarmonyMinimumWindowWidth: 400
-  openHarmonyMinimumWindowHeight: 300
   stadiaPresentMode: 0
   stadiaTargetFramerate: 0
   vulkanNumSwapchainBuffers: 3
@@ -283,13 +254,8 @@ PlayerSettings:
   iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
   shaderPrecisionModel: 0
-  optimizeInstantGameEnabled: 1
-  useMobileShaderForInstantGame: 1
-  limitMaxVisibleLights16: 1
-  declareTempsInMain: 1
-  declareImmCBAsConst: 1
   clonedFromGUID: 3c72c65a16f0acb438eed22b8b16c24a
-  templatePackageId: cn.tuanjie.template.urp-blank@3.0.3
+  templatePackageId: com.unity.template.urp-blank@3.0.3
   templateDefaultScene: Assets/Scenes/SampleScene.scene
   useCustomMainManifest: 0
   useCustomLauncherManifest: 0
@@ -876,10 +842,8 @@ PlayerSettings:
   useDeterministicCompilation: 1
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
-  monoAOTCompilation: 0
   gcIncremental: 0
   gcWBarrierValidation: 0
-  gcAlgorithm: {}
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
@@ -955,81 +919,19 @@ PlayerSettings:
   hmiPlayerDataPath: 
   hmiForceSRGBBlit: 1
   embeddedLinuxEnableGamepadInput: 0
-  logStartupTiming: 0
+  hmiLogStartupTiming: 0
   hmiCpuConfiguration: 
-  customShaderCachePath: 
-  openHarmonySplashScreen: {fileID: 0}
-  openHarmonySplashScreenScale: 0
-  OpenHarmonyTargetArchitectures: 2
-  openHarmonyClientID: 
-  openHarmonyAppID: 
-  openHarmonyDeviceTypes: 7
-  openHarmonyAppIconTypes: 1
-  openHarmonySupportWindowModes: 1
-  OpenHarmonyBundleVersionCode: 1
-  forceOpenHarmonyInternetPermission: 0
-  forceOpenHarmonySDCardPermission: 0
-  openHarmonyUseLowAccuracyLocation: 0
-  openHarmonyPredefinedPermissions: []
-  openHarmonyUseTuanjieLogo: 1
-  openHarmonyLaunchImage: {fileID: 0}
-  openHarmonyLaunchBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
-  OpenHarmonyKeystoreName: 
-  OpenHarmonyKeyaliasName: 
-  OpenHarmonyProfile: 
-  OpenHarmonyCertificate: 
-  OpenHarmonyCompatibleSdkVersion: 14
-  OpenHarmonyUseCustomKeystore: 0
-  OpenHarmonyUseCustomModuleJsonFive: 0
-  OpenHarmonyUseCustomTuanjiePlayerAbility: 0
   apiCompatibilityLevel: 6
-  weixinMiniGameMemorySize: 32
-  weixinMiniGameExceptionSupport: 1
-  weixinMiniGameExceptionOnlyEnableForUserCodes: 0
-  weixinMiniGameNameFilesAsHashes: 0
-  weixinMiniGameShowDiagnostics: 0
-  weixinMiniGameDataCaching: 1
-  weixinMiniGameDebugSymbols: 0
-  weixinMiniGameEmscriptenArgs: 
-  weixinMiniGameModulesDirectory: 
-  weixinMiniGameTemplate: APPLICATION:Default
-  weixinMiniGameAnalyzeBuildSize: 0
-  weixinMiniGameUseEmbeddedResources: 0
-  weixinMiniGameCompressionFormat: 0
-  weixinMiniGameWasmArithmeticExceptions: 0
-  weixinMiniGameLinkerTarget: 1
-  weixinMiniGameThreadsSupport: 0
-  weixinMiniGameDecompressionFallback: 0
-  weixinMiniGameInitialMemorySize: 32
-  weixinMiniGameMaximumMemorySize: 2048
-  weixinMiniGameMemoryGrowthMode: 2
-  weixinMiniGameMemoryLinearGrowthStep: 16
-  weixinMiniGameMemoryGeometricGrowthStep: 0.2
-  weixinMiniGameMemoryGeometricGrowthCap: 96
-  weixinMiniGamePowerPreference: 2
-  weixinMiniGameSIMDSupport: 0
-  weixinMiniGameUseSlimMetaFileFormat: 1
-  weixinMiniGamePhysicsEngine: 0
-  weixinMiniGameInjectStrippedMethodLogger: 0
-  weixinMiniGameEnableDotNetWasmExceptionHandling: 1
-  weixinMiniGamePreserveEventDelegate: 0
-  activeSubplatform: 0
-  serializedFileTypeTreeMemoryOptimization: 0
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 
+  cloudProjectId: 370e5ead-488a-4177-8788-3da5567db069
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: SurivivalARPGDemo
+  organizationId: kl388734
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
-  qnxEGLPriority: 0
-  embeddedLinuxEGLPriority: 0
-  androidEGLPriority: 0
   platformRequiresReadableAssets: 0
   virtualTexturingSupportEnabled: 0
-  packClustersForPlayer: 0
   insecureHttpOption: 0
-  useStringInternPool: 0
