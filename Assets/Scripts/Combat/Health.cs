@@ -123,4 +123,24 @@ public class Health : MonoBehaviour,IDamageable
 
         HealthChanged?.Invoke(CurrentHealth, MaxHealth);
     }
+
+    /// <summary>
+    /// 只供 NetworkPlayerState 把服务器状态应用到本地表现层。
+    /// 它不会自行计算伤害。
+    /// </summary>
+    public void ApplyNetworkState(int current, int maximum)
+    {
+        bool wasDead = IsDead;
+
+        maxHealth = Mathf.Max(1, maximum);
+        CurrentHealth = Mathf.Clamp(current, 0, maxHealth);
+        IsDead = CurrentHealth <= 0;
+
+        HealthChanged?.Invoke(CurrentHealth, maxHealth);
+
+        if (IsDead && !wasDead)
+        {
+            Died?.Invoke();
+        }
+    }
 }

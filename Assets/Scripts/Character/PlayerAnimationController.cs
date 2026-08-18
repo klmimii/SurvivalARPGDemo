@@ -19,6 +19,10 @@ public class PlayerAnimationController : MonoBehaviour
 
     private static readonly int IsAiming = Animator.StringToHash("IsAiming");
 
+    private bool useNetworkLocomotion;
+    private float networkMoveSpeed;
+    private bool networkGrounded = true;
+
     private void OnEnable()
     {
         playerController.JumpStarted += PlayJump;
@@ -40,9 +44,32 @@ public class PlayerAnimationController : MonoBehaviour
             return;
         }
 
-        animator.SetFloat(Speed, playerController.NormalizedMoveSpeed, 0.1f, Time.deltaTime);
-        animator.SetBool(IsGrounded, playerController.IsGrounded);
+        float speedValue = useNetworkLocomotion
+            ? networkMoveSpeed
+            : playerController.NormalizedMoveSpeed;
+
+        bool groundedValue = useNetworkLocomotion
+            ? networkGrounded
+            : playerController.IsGrounded;
+
+        animator.SetFloat(
+            Speed,
+            speedValue,
+            0.1f,
+            Time.deltaTime);
+
+        animator.SetBool(IsGrounded, groundedValue);
     }
+    //private void Update()
+    //{
+    //    if (animator == null)
+    //    {
+    //        return;
+    //    }
+
+    //    animator.SetFloat(Speed, playerController.NormalizedMoveSpeed, 0.1f, Time.deltaTime);
+    //    animator.SetBool(IsGrounded, playerController.IsGrounded);
+    //}
 
     public void SetAnimator(Animator newAnimator)
     {
@@ -91,5 +118,19 @@ public class PlayerAnimationController : MonoBehaviour
                 animator.SetTrigger(AttackLongBlade);
                 break;
         }
+    }
+
+    /// <summary>
+    /// 远端玩家没有本机 PlayerController 输入，因此改用网络参数驱动。
+    /// </summary>
+    public void SetUseNetworkLocomotion(bool value)
+    {
+        useNetworkLocomotion = value;
+    }
+
+    public void ApplyNetworkLocomotion(float moveSpeed, bool grounded)
+    {
+        networkMoveSpeed = Mathf.Clamp01(moveSpeed);
+        networkGrounded = grounded;
     }
 }

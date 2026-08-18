@@ -52,6 +52,7 @@ public sealed class NetworkPlayer : NetworkBehaviour
 
         BindLocalCamera();
         LocalPlayerContext.Register(this);
+        BindOwnerHud();
 
         // 本册使用拥有者权威位移，可以由拥有者设置初始位置。
         // 避免 Host 和 Client 完全重叠。
@@ -140,9 +141,38 @@ public sealed class NetworkPlayer : NetworkBehaviour
 
         cameraController.SetTarget(transform);
 
+        WeaponController localWeaponController =
+    GetComponent<WeaponController>();
+
+        if (localWeaponController != null)
+        {
+            localWeaponController.SetCameraReferences(
+                mainCamera,
+                cameraController);
+        }
         // 强制重新执行 OnEnable：锁定并隐藏鼠标，
         // 同时确保刚刚创建的本机玩家成为当前目标。
         cameraController.enabled = false;
         cameraController.enabled = true;
+    }
+    private void BindOwnerHud()
+    {
+        Health ownHealth = GetComponent<Health>();
+
+        PlayerHudView healthView =
+            Object.FindObjectOfType<PlayerHudView>(true);
+
+        if (healthView != null)
+        {
+            healthView.Bind(ownHealth);
+        }
+
+        PartyPresenter partyPresenter =
+            Object.FindObjectOfType<PartyPresenter>(true);
+
+        if (partyPresenter != null)
+        {
+            partyPresenter.Bind(partyController);
+        }
     }
 }

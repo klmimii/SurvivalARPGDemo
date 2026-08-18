@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public class WeaponController : MonoBehaviour
 {
@@ -42,6 +43,12 @@ public class WeaponController : MonoBehaviour
     //private Vector3 pendingProjectileDirection;
     private Vector3 pendingProjectileTargetPoint;
     private bool hasPendingProjectileTarget;
+
+    /// <summary>武器切换完成后广播，网络状态组件会监听。</summary>
+    public event Action<WeaponDefinition> WeaponEquipped;
+
+    /// <summary>本机开始攻击动画时广播，用于通知远端播放同类动画。</summary>
+    public event Action<WeaponType> AttackStarted;
 
     private void Awake()
     {
@@ -131,6 +138,8 @@ public class WeaponController : MonoBehaviour
         hasPendingProjectileTarget = false;
         pendingProjectileTargetPoint = Vector3.zero;
         nextAttackTime = 0f;
+
+        WeaponEquipped?.Invoke(CurrentWeapon);
     }
 
     private void OnAttackStarted(
@@ -226,6 +235,8 @@ public class WeaponController : MonoBehaviour
 
         animationController.PlayAttack(
             pendingWeapon.weaponType);
+
+        AttackStarted?.Invoke(pendingWeapon.weaponType);
     }
 
     private void EnterAimMode()
@@ -510,6 +521,12 @@ public class WeaponController : MonoBehaviour
                 CurrentWeapon.attackRadius);
         }
     }
+    public void SetCameraReferences(Camera cameraValue, ThirdPersonCamera controllerValue)
+    {
+        gameplayCamera = cameraValue;
+        thirdPersonCamera = controllerValue;
+    }
+
 }
 
 //using System.Collections;

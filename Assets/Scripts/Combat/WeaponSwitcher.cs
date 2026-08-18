@@ -59,6 +59,9 @@ public class WeaponSwitcher : MonoBehaviour
         }
 
         weaponController.Equip(weapon);
-        toastView.Show($"切换武器：{weapon.displayName}");
+        if (toastView != null)
+        {
+            toastView.Show($"切换武器：{weapon.displayName}");
+        }
     }
 }

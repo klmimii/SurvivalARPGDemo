@@ -8,16 +8,61 @@ public class PlayerHudView : MonoBehaviour
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private Image healthFillImage;
 
+    //private void OnEnable()
+    //{
+    //    if (playerHealth == null)
+    //    {
+    //        Debug.LogError(
+    //            "PlayerHudView没有绑定Player Health。",
+    //            this);
+    //        return;
+    //    }
+
+    //    playerHealth.HealthChanged += RefreshHealth;
+
+    //    RefreshHealth(
+    //        playerHealth.CurrentHealth,
+    //        playerHealth.MaxHealth);
+    //}
+
+    //private void OnDisable()
+    //{
+    //    if (playerHealth != null)
+    //    {
+    //        playerHealth.HealthChanged -= RefreshHealth;
+    //    }
+    //}
+
     private void OnEnable()
+    {
+        SubscribeCurrentHealth();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeCurrentHealth();
+    }
+
+    public void Bind(Health value)
+    {
+        UnsubscribeCurrentHealth();
+        playerHealth = value;
+
+        if (isActiveAndEnabled)
+        {
+            SubscribeCurrentHealth();
+        }
+    }
+
+    private void SubscribeCurrentHealth()
     {
         if (playerHealth == null)
         {
-            Debug.LogError(
-                "PlayerHudView没有绑定Player Health。",
-                this);
             return;
         }
 
+        // 先减再加可以防止重复订阅。
+        playerHealth.HealthChanged -= RefreshHealth;
         playerHealth.HealthChanged += RefreshHealth;
 
         RefreshHealth(
@@ -25,7 +70,7 @@ public class PlayerHudView : MonoBehaviour
             playerHealth.MaxHealth);
     }
 
-    private void OnDisable()
+    private void UnsubscribeCurrentHealth()
     {
         if (playerHealth != null)
         {

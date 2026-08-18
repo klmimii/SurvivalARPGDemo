@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     private float dodgeEndTime;
     private float nextDodgeTime;
 
-    private bool acceptLocalInput;
+    [SerializeField] private bool acceptLocalInput = true;
     private bool inputBound;
 
     private void Awake()

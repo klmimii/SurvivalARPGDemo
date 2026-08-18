@@ -18,7 +18,8 @@ public class PartyController : MonoBehaviour
 
     [SerializeField] private PlayerAnimationController animationController;
 
-    private bool acceptLocalInput = true;
+    [SerializeField] private bool acceptLocalInput = true;
+    private bool inputBound;
 
     public int ActiveIndex => activeIndex;
 
@@ -27,6 +28,17 @@ public class PartyController : MonoBehaviour
 
     private int activeIndex;
     private GameObject activeVisual;
+    public int MemberCount => members == null ? 0 : members.Length;
+
+    public CharacterDefinition GetMember(int index)
+    {
+        if (members == null || index < 0 || index >= members.Length)
+        {
+            return null;
+        }
+
+        return members[index];
+    }
 
     private void Start()
     {
@@ -38,21 +50,27 @@ public class PartyController : MonoBehaviour
             return;
         }
         //如果配置征程就默认切换队伍里的第一个角色
-        SwitchTo(0);
+        //SwitchTo(0);
+        // NetworkPlayerState 可能已在 OnNetworkSpawn 中应用过初始角色，
+        // 避免 Start 再销毁并重新创建一次外观。
+        if (ActiveMember == null)
+        {
+            SwitchTo(0);
+        }
     }
 
     private void OnEnable()
     {
-        switchCharacterAction.action.Enable();
-        switchCharacterAction.action.performed += OnSwitchCharacter;
+        if (acceptLocalInput)
+        {
+            BindInput();
+        }
     }
 
     private void OnDisable()
     {
-        switchCharacterAction.action.performed -= OnSwitchCharacter;
-        switchCharacterAction.action.Disable();
+        UnbindInput();
     }
-
     /// <summary>
     /// 切换按键触发后做什么
     /// </summary>
@@ -121,8 +139,56 @@ public class PartyController : MonoBehaviour
         //通知全游戏现在换人了，并告知换的是谁
         ActiveMemberChanged?.Invoke(ActiveMember);
     }
+    //public void SetAcceptLocalInput(bool value)
+    //{
+    //    acceptLocalInput = value;
+    //}
+
     public void SetAcceptLocalInput(bool value)
     {
+        if (acceptLocalInput == value)
+        {
+            return;
+        }
+
         acceptLocalInput = value;
+
+        if (!isActiveAndEnabled)
+        {
+            return;
+        }
+
+        if (acceptLocalInput)
+        {
+            BindInput();
+        }
+        else
+        {
+            UnbindInput();
+        }
+    }
+
+    private void BindInput()
+    {
+        if (inputBound || switchCharacterAction == null)
+        {
+            return;
+        }
+
+        switchCharacterAction.action.Enable();
+        switchCharacterAction.action.performed += OnSwitchCharacter;
+        inputBound = true;
+    }
+
+    private void UnbindInput()
+    {
+        if (!inputBound || switchCharacterAction == null)
+        {
+            return;
+        }
+
+        switchCharacterAction.action.performed -= OnSwitchCharacter;
+        switchCharacterAction.action.Disable();
+        inputBound = false;
     }
 }

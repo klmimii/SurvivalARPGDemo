@@ -428,6 +428,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 7953848997051203796}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b44a88fb7f7830a44a499a05b2712ac4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1265895009497127001}
   m_SourcePrefab: {fileID: 100100000, guid: b44a88fb7f7830a44a499a05b2712ac4, type: 3}
 --- !u!4 &493761574453701194 stripped
 Transform:
@@ -509,6 +513,7 @@ MonoBehaviour:
   dodgeSpeed: 9
   dodgeDuration: 0.35
   dodgeCooldown: 0.7
+  acceptLocalInput: 0
 --- !u!114 &307179582188765624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,6 +606,7 @@ MonoBehaviour:
   health: {fileID: 7995910260113342236}
   weaponController: {fileID: 9193329944492904126}
   animationController: {fileID: 6409160951593836467}
+  acceptLocalInput: 0
 --- !u!114 &9193329944492904126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -748,7 +754,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 2880704832494358859}
   partyController: {fileID: 7520962431445831879}
-  ownerOnlyBehaviours: []
+  ownerOnlyBehaviours:
+  - {fileID: 9193329944492904126}
+  - {fileID: 6531565539172945659}
+--- !u!114 &-1265895009497127001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977810146027417840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cedfb5586552af44ea7a97deff749919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partyController: {fileID: 7520962431445831879}
+  weaponController: {fileID: 9193329944492904126}
+  playerController: {fileID: 2880704832494358859}
+  animationController: {fileID: 6409160951593836467}
+  health: {fileID: 7995910260113342236}
+  weapons:
+  - {fileID: 11400000, guid: 63ebbd02b59859c478f25e9d8db10bf3, type: 2}
+  - {fileID: 11400000, guid: e84a9642a875f7a4386dd629e6704bc1, type: 2}
+  - {fileID: 11400000, guid: 55cb566b4d5c90444bb1abbd6e956261, type: 2}
+  locomotionSendInterval: 0.1
 --- !u!4 &1793879875398562409 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: b44a88fb7f7830a44a499a05b2712ac4,
