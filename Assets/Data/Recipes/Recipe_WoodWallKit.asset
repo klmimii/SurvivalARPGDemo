@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a92af24bbc274b4abae6561642e0851, type: 3}
   m_Name: Recipe_WoodWallKit
   m_EditorClassIdentifier: 
-  recipeId: woodWall_kit
+  recipeId: woodwall_kit
   displayName: "\u6728\u5899\u5957\u4EF6"
   description: 
   unlockItem: {fileID: 0}

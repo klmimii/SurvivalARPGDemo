@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27a19cf5894ba2f429091f91162cd407, type: 3}
   m_Name: Item_Building2_WoodPile
   m_EditorClassIdentifier: 
-  itemId: building2_woodPile
+  itemId: building2_wood_pile
   displayName: "\u6728\u677F"
   description: "\u5806\u53E0\u6574\u9F50\u7684\u5E72\u6728\u67F4\u3002\u653E\u7F6E\u4E8E\u5730\u9762\uFF0C\u53EF\u4F5C\u4E3A\u71C3\u6599\u50A8\u5907\uFF0C\u4E5F\u80FD\u5145\u5F53\u7B80\u6613\u7684\u63A9\u4F53\u4E0E\u88C5\u9970\u7269\u4EF6\u3002"
   icon: {fileID: 21300000, guid: 6f95ac1fe9a5121438998df91a045e55, type: 3}

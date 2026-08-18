@@ -17,7 +17,7 @@ public class PlayerDeathHandler : MonoBehaviour
         health.Died += OnDied;
     }
 
-    private void nDisable()
+    private void Onisable()
     {
         health.Died -= OnDied;
     }

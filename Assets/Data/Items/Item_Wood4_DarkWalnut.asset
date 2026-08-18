@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27a19cf5894ba2f429091f91162cd407, type: 3}
   m_Name: Item_Wood4_DarkWalnut
   m_EditorClassIdentifier: 
-  itemId: wood4_darkWalnut
+  itemId: wood4_darkwalnut
   displayName: "\u9ED1\u80E1\u6843\u6728"
   description: "\u6DF1\u8272\u81F4\u5BC6\u7684\u540D\u8D35\u786C\u6728\u3002\u5F3A\u5EA6\u9AD8\uFF0C\u9002\u5408\u6253\u9020\u9AD8\u7EA7\u5BB6\u5177\u4E0E\u7CBE\u826F\u6B66\u5668\u624B\u67C4\u3002"
   icon: {fileID: 21300000, guid: 1f2d2cdd4f8690c449e610fab1dffbef, type: 3}

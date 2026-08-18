@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27a19cf5894ba2f429091f91162cd407, type: 3}
   m_Name: Item_Building1_CampfireKit
   m_EditorClassIdentifier: 
-  itemId: building1_campfireKit
+  itemId: building1_campfire_kit
   displayName: "\u7BDD\u706B\u5957\u4EF6"
   description: "\u4E00\u5957\u7B80\u6613\u7BDD\u706B\u7EC4\u88C5\u6750\u6599\u3002\u653E\u7F6E\u540E\u53EF\u751F\u6210\u7BDD\u706B\uFF0C\u63D0\u4F9B\u5149\u7167\u4E0E\u70ED\u6E90\uFF0C\u7528\u6765\u70F9\u996A\u98DF\u7269\u3001\u62B5\u5FA1\u591C\u95F4\u7684\u5BD2\u51B7\u3002"
   icon: {fileID: 21300000, guid: 05529d0e5bfb38b4d8caaa3cdc73a15f, type: 3}

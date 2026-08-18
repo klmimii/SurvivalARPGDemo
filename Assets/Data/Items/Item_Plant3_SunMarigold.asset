@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27a19cf5894ba2f429091f91162cd407, type: 3}
   m_Name: Item_Plant3_SunMarigold
   m_EditorClassIdentifier: 
-  itemId: plant3_sunMarigold
+  itemId: plant3_sun_marigold
   displayName: "\u592A\u9633\u82B1"
   description: "\u6C90\u6D74\u9633\u5149\u751F\u957F\u7684\u91D1\u76CF\u82B1\u3002\u8574\u542B\u65E5\u5149\u4E4B\u529B\uFF0C\u591A\u7528\u4E8E\u5236\u4F5C\u6297\u6027\u7C7B\u836F\u5242\u3002"
   icon: {fileID: 21300000, guid: 00700fbbe8a43004388e37d0621c9da6, type: 3}

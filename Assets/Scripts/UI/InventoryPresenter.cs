@@ -13,22 +13,52 @@ public class InventoryPresenter : MonoBehaviour
     // 当前点击的物品，用于右侧详情和选中框。
     private ItemDefinition selectedDefinition;
 
+    //private void Start()
+    //{
+    //    inventoryModel = GameBootstrap.InventoryModel;
+
+    //    if (inventoryModel == null)
+    //    {
+    //        Debug.LogError(
+    //            "InventoryPresenter找不到InventoryModel，请确认GameBootstrap已启用。",
+    //            this);
+    //        return;
+    //    }
+
+    //    inventoryModel.Changed += Refresh;
+    //    inventoryView.CategorySelected += ChangeCategory;
+
+    //    Refresh();
+    //}
+
+    //private void OnDestroy()
+    //{
+    //    if (inventoryModel != null)
+    //    {
+    //        inventoryModel.Changed -= Refresh;
+    //    }
+
+    //    if (inventoryView != null)
+    //    {
+    //        inventoryView.CategorySelected -= ChangeCategory;
+    //    }
+    //}
+    private bool viewEventsBound;
+
     private void Start()
     {
-        inventoryModel = GameBootstrap.InventoryModel;
+        BindViewEventsOnce();
 
+        // 单机场景继续使用 GameBootstrap.InventoryModel；
+        // 网络场景若已提前 Bind，则不覆盖网络镜像。
         if (inventoryModel == null)
         {
-            Debug.LogError(
-                "InventoryPresenter找不到InventoryModel，请确认GameBootstrap已启用。",
-                this);
-            return;
+            Bind(GameBootstrap.InventoryModel);
         }
-
-        inventoryModel.Changed += Refresh;
-        inventoryView.CategorySelected += ChangeCategory;
-
-        Refresh();
+        else
+        {
+            Refresh();
+        }
     }
 
     private void OnDestroy()
@@ -38,10 +68,45 @@ public class InventoryPresenter : MonoBehaviour
             inventoryModel.Changed -= Refresh;
         }
 
-        if (inventoryView != null)
+        if (inventoryView != null && viewEventsBound)
         {
             inventoryView.CategorySelected -= ChangeCategory;
         }
+    }
+
+    public void Bind(InventoryModel model)
+    {
+        if (inventoryModel != null)
+        {
+            inventoryModel.Changed -= Refresh;
+        }
+
+        inventoryModel = model;
+
+        if (inventoryModel == null)
+        {
+            Debug.LogWarning(
+                "InventoryPresenter 收到空的 InventoryModel。",
+                this);
+            return;
+        }
+
+        inventoryModel.Changed -= Refresh;
+        inventoryModel.Changed += Refresh;
+
+        BindViewEventsOnce();
+        Refresh();
+    }
+
+    private void BindViewEventsOnce()
+    {
+        if (viewEventsBound || inventoryView == null)
+        {
+            return;
+        }
+
+        inventoryView.CategorySelected += ChangeCategory;
+        viewEventsBound = true;
     }
 
     /// <summary>
