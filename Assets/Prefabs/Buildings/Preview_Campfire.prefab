@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5619183403151760037}
   - component: {fileID: 4752581631889980786}
   - component: {fileID: 6852356417420042705}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Preview_Campfire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,12 +86,12 @@ PrefabInstance:
     - target: {fileID: 454638715273854001, guid: 0a7cd4e473cbdda42bc48a2cad2fe330,
         type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 1175245121505502356, guid: 0a7cd4e473cbdda42bc48a2cad2fe330,
         type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2290306285197847041, guid: 0a7cd4e473cbdda42bc48a2cad2fe330,
         type: 3}
@@ -106,7 +106,7 @@ PrefabInstance:
     - target: {fileID: 2510978671969102769, guid: 0a7cd4e473cbdda42bc48a2cad2fe330,
         type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 3066104129365221963, guid: 0a7cd4e473cbdda42bc48a2cad2fe330,
         type: 3}
@@ -166,12 +166,12 @@ PrefabInstance:
     - target: {fileID: 3314664966335482132, guid: 0a7cd4e473cbdda42bc48a2cad2fe330,
         type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4917250158530193335, guid: 0a7cd4e473cbdda42bc48a2cad2fe330,
         type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6165229111387297206, guid: 0a7cd4e473cbdda42bc48a2cad2fe330,
         type: 3}
@@ -181,7 +181,7 @@ PrefabInstance:
     - target: {fileID: 6336807257851338541, guid: 0a7cd4e473cbdda42bc48a2cad2fe330,
         type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6686052358270016516, guid: 0a7cd4e473cbdda42bc48a2cad2fe330,
         type: 3}
@@ -191,7 +191,7 @@ PrefabInstance:
     - target: {fileID: 7653708526903315141, guid: 0a7cd4e473cbdda42bc48a2cad2fe330,
         type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 7653708526903315141, guid: 0a7cd4e473cbdda42bc48a2cad2fe330,
         type: 3}

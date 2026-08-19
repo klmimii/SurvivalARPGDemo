@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NpcDialoguePresenter : MonoBehaviour
@@ -8,15 +6,50 @@ public class NpcDialoguePresenter : MonoBehaviour
     [SerializeField] private ToastView toastView;
 
     private NpcQuestGiver activeNpc;
+    private IQuestService boundService;
 
     private void OnEnable()
     {
         dialogueView.PrimaryClicked += OnPrimaryClicked;
+        QuestServiceContext.BindingChanged += Rebind;
+        Rebind();
     }
 
     private void OnDisable()
     {
         dialogueView.PrimaryClicked -= OnPrimaryClicked;
+        QuestServiceContext.BindingChanged -= Rebind;
+        Unbind();
+    }
+
+    private void Rebind()
+    {
+        Unbind();
+        boundService = QuestServiceContext.Current;
+
+        if (boundService != null)
+        {
+            boundService.Changed += OnQuestChanged;
+        }
+
+        OnQuestChanged();
+    }
+
+    private void Unbind()
+    {
+        if (boundService != null)
+        {
+            boundService.Changed -= OnQuestChanged;
+            boundService = null;
+        }
+    }
+
+    private void OnQuestChanged()
+    {
+        if (activeNpc != null && dialogueView.gameObject.activeInHierarchy)
+        {
+            Refresh();
+        }
     }
 
     public void Open(NpcQuestGiver npc)
@@ -27,7 +60,13 @@ public class NpcDialoguePresenter : MonoBehaviour
 
     private void Refresh()
     {
-        QuestRuntime runtime = GameBootstrap.QuestService.GetQuest(activeNpc.Quest.questId);
+        IQuestService service = QuestServiceContext.Current;
+        if (activeNpc == null || service == null)
+        {
+            return;
+        }
+
+        QuestRuntime runtime = service.GetQuest(activeNpc.Quest.questId);
 
         if (runtime == null)
         {
@@ -43,7 +82,7 @@ public class NpcDialoguePresenter : MonoBehaviour
         {
             dialogueView.Show(
                 activeNpc.NpcName,
-                "你做得很好，营地终于有了火光。请收下奖励。",
+                "任务已经完成，请领取奖励。",
                 "交付任务并领取奖励",
                 true);
             return;
@@ -53,7 +92,7 @@ public class NpcDialoguePresenter : MonoBehaviour
         {
             dialogueView.Show(
                 activeNpc.NpcName,
-                "营地已经建立。准备好后再去挑战森林深处吧。",
+                "这个任务已经完成。",
                 string.Empty,
                 false);
             return;
@@ -68,17 +107,19 @@ public class NpcDialoguePresenter : MonoBehaviour
 
     private void OnPrimaryClicked()
     {
-        if (activeNpc == null)
+        IQuestService service = QuestServiceContext.Current;
+        if (activeNpc == null || service == null)
         {
             return;
         }
 
-        QuestRuntime runtime = GameBootstrap.QuestService.GetQuest(activeNpc.Quest.questId);
+        QuestRuntime runtime = service.GetQuest(activeNpc.Quest.questId);
         InventoryOperationResult result = runtime == null
-            ? GameBootstrap.QuestService.TryAcceptQuest(activeNpc.Quest)
-            : GameBootstrap.QuestService.TryClaimReward(activeNpc.Quest.questId);
+            ? service.TryAcceptQuest(activeNpc.Quest)
+            : service.TryClaimReward(activeNpc.Quest.questId);
 
         toastView.Show(result.Message);
+        // ServerRpc 是异步的。服务器同步状态后 OnQuestChanged 会再次刷新。
         Refresh();
     }
 
@@ -88,8 +129,11 @@ public class NpcDialoguePresenter : MonoBehaviour
 
         for (int i = 0; i < runtime.Definition.objectives.Length; i++)
         {
-            QuestObjectiveDefinition objective = runtime.Definition.objectives[i];
-            text += $"{objective.description} ({runtime.Progress[i]}/{objective.requiredCount})\n";
+            QuestObjectiveDefinition objective =
+                runtime.Definition.objectives[i];
+
+            text += $"{objective.description} " +
+                $"({runtime.Progress[i]}/{objective.requiredCount})\n";
         }
 
         return text;

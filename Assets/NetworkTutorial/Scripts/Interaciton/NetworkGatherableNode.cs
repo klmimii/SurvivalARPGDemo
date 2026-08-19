@@ -43,6 +43,30 @@ public sealed class NetworkGatherableNode :
 
     public bool IsAvailable => available.Value;
 
+    [Header("Save Identity")]
+    [Tooltip("同一场景内必须唯一，发布后不要修改。")]
+    [SerializeField]
+    private string sceneSaveId;
+
+    private double serverAvailableAt;
+
+    public string SceneSaveId => sceneSaveId;
+
+    public float ServerRemainingRefreshSeconds
+    {
+        get
+        {
+            if (!IsServer || available.Value || NetworkManager == null)
+            {
+                return 0f;
+            }
+
+            return Mathf.Max(
+                0f,
+                (float)(serverAvailableAt - NetworkManager.ServerTime.Time));
+        }
+    }
+
     public override void OnNetworkSpawn()
     {
         available.OnValueChanged += OnAvailableChanged;
@@ -140,6 +164,14 @@ public sealed class NetworkGatherableNode :
             return;
         }
 
+        NetworkQuestService questService =
+    playerObject.GetComponent<NetworkQuestService>();
+
+        questService?.ServerAddProgress(
+            QuestObjectiveType.ObtainItem,
+            rewardItem.itemId,
+            rewardAmount);
+
         // ServerRpc 会在服务器主线程顺序执行。
         // 第一个请求先把 available 改成 false，后续请求就会被拒绝。
         available.Value = false;
@@ -149,16 +181,21 @@ public sealed class NetworkGatherableNode :
             StopCoroutine(refreshRoutine);
         }
 
-        refreshRoutine = StartCoroutine(ServerRefreshRoutine());
+        serverAvailableAt =
+    NetworkManager.ServerTime.Time + refreshSeconds;
+
+refreshRoutine = StartCoroutine(
+    ServerRefreshRoutine(refreshSeconds));
     }
 
-    private IEnumerator ServerRefreshRoutine()
+    private IEnumerator ServerRefreshRoutine(float waitSeconds)
     {
-        yield return new WaitForSeconds(refreshSeconds);
+        yield return new WaitForSeconds(Mathf.Max(0.01f, waitSeconds));
 
         if (IsServer && IsSpawned)
         {
             available.Value = true;
+            serverAvailableAt = 0d;
         }
 
         refreshRoutine = null;
@@ -180,5 +217,37 @@ public sealed class NetworkGatherableNode :
         {
             interactionCollider.enabled = value;
         }
+    }
+
+    public void ServerRestoreState(
+    bool savedAvailable,
+    float remainingRefreshSeconds)
+    {
+        if (!IsServer || !IsSpawned)
+        {
+            return;
+        }
+
+        if (refreshRoutine != null)
+        {
+            StopCoroutine(refreshRoutine);
+            refreshRoutine = null;
+        }
+
+        if (savedAvailable || remainingRefreshSeconds <= 0f)
+        {
+            available.Value = true;
+            serverAvailableAt = 0d;
+            ApplyAvailableState(true);
+            return;
+        }
+
+        available.Value = false;
+        serverAvailableAt = NetworkManager.ServerTime.Time +
+            remainingRefreshSeconds;
+        ApplyAvailableState(false);
+
+        refreshRoutine = StartCoroutine(
+            ServerRefreshRoutine(remainingRefreshSeconds));
     }
 }

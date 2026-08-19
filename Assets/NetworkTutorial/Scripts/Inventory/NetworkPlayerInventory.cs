@@ -1,6 +1,8 @@
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using System.Collections.Generic;
+
 
 /// <summary>
 /// 挂在每个 NetworkPlayer 上。
@@ -279,5 +281,65 @@ public sealed class NetworkPlayerInventory : NetworkBehaviour
         }
 
         presenter.Bind(ownerViewModel);
+    }
+
+    public void ServerCaptureSlots(List<InventorySlotSaveData> destination)
+    {
+        if (!IsServer || serverModel == null || destination == null)
+        {
+            return;
+        }
+
+        destination.Clear();
+
+        foreach (ItemStack slot in serverModel.Slots)
+        {
+            destination.Add(new InventorySlotSaveData
+            {
+                itemId = slot.IsEmpty
+                    ? string.Empty
+                    : slot.Definition.itemId,
+                amount = slot.IsEmpty ? 0 : slot.Amount
+            });
+        }
+    }
+
+    public bool ServerRestoreSlots(
+        IReadOnlyList<InventorySlotSaveData> savedSlots)
+    {
+        if (!IsServer || serverModel == null || savedSlots == null ||
+            ItemDatabase.Instance == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < serverModel.Capacity; i++)
+        {
+            if (i >= savedSlots.Count || savedSlots[i] == null ||
+                string.IsNullOrWhiteSpace(savedSlots[i].itemId) ||
+                savedSlots[i].amount <= 0)
+            {
+                serverModel.SetSlot(i, null, 0);
+                continue;
+            }
+
+            ItemDefinition definition = ItemDatabase.Instance.GetById(
+                savedSlots[i].itemId);
+
+            if (definition == null)
+            {
+                Debug.LogWarning(
+                    $"存档物品 ID 已失效：{savedSlots[i].itemId}",
+                    this);
+                serverModel.SetSlot(i, null, 0);
+                continue;
+            }
+
+            serverModel.SetSlot(i, definition, savedSlots[i].amount);
+        }
+
+        serverModel.NotifyChanged();
+        CopyServerModelToNetworkList();
+        return true;
     }
 }

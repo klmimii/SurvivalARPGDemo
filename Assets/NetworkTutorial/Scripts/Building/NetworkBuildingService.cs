@@ -43,6 +43,12 @@ public sealed class NetworkBuildingService : NetworkBehaviour
 
     private ToastView ownerToast;
 
+    /// <summary>
+    /// 服务器把一次建造或拆除结果发回拥有者时触发。
+    /// 正式操作控制器用它解除“正在等待服务器”的状态。
+    /// </summary>
+    public event Action<string> OwnerResultReceived;
+
     public override void OnNetworkSpawn()
     {
         if (IsOwner)
@@ -147,7 +153,10 @@ public sealed class NetworkBuildingService : NetworkBehaviour
             return;
         }
 
-        if (!ServerValidateSurface(
+        // 找到兼容且未占用的Socket时，Socket本身就是合法支撑。
+        // 只有自由放置时，才继续检查Ground/Floor表面。
+        if (selectedSocket == null &&
+            !ServerValidateSurface(
                 definition,
                 safePosition,
                 ref ignoredSupport,
@@ -216,6 +225,14 @@ public sealed class NetworkBuildingService : NetworkBehaviour
             ServerSendResult(senderId, "吸附点刚刚被占用，材料已回滚。");
             return;
         }
+
+        NetworkQuestService questService =
+    playerObject.GetComponent<NetworkQuestService>();
+
+        questService?.ServerAddProgress(
+            QuestObjectiveType.BuildBuilding,
+            definition.buildingId,
+            1);
 
         ServerSendResult(
             senderId,
@@ -566,6 +583,94 @@ public sealed class NetworkBuildingService : NetworkBehaviour
         result[item] = current + amount;
     }
 
+    /// <summary>
+    /// 仅检查该建筑是否存在于服务器白名单。
+    /// 这能避免菜单引用了一个服务器根本不认识的配置。
+    /// </summary>
+    public bool HasDefinition(BuildingDefinition definition)
+    {
+        return definition != null &&
+            !string.IsNullOrWhiteSpace(definition.buildingId) &&
+            FindEntry(definition.buildingId) != null;
+    }
+
+    /// <summary>
+    /// 用拥有者本机的网络背包镜像估算能否支付。
+    /// 只控制预览红绿；服务器仍会在 RequestPlaceServerRpc 中重新验证并扣费。
+    /// </summary>
+    public bool OwnerCanAfford(BuildingDefinition definition)
+    {
+        if (!IsOwner || definition == null)
+        {
+            return false;
+        }
+
+        NetworkPlayerInventory inventory =
+            GetComponent<NetworkPlayerInventory>();
+        InventoryModel model = inventory != null
+            ? inventory.OwnerViewModel
+            : null;
+
+        if (model == null)
+        {
+            return false;
+        }
+
+        // 与服务器一致：先使用已经合成好的建筑成品。
+        if (definition.requiredKit != null &&
+            model.CountItem(definition.requiredKit) > 0)
+        {
+            return true;
+        }
+
+        // 没有成品时，检查配方解锁和全部原料。
+        RecipeDefinition recipe = definition.craftingRecipe;
+        if (definition.allowIngredientFallback && recipe != null)
+        {
+            if (recipe.unlockItem != null &&
+                model.CountItem(recipe.unlockItem) <= 0)
+            {
+                return false;
+            }
+
+            if (recipe.outputItem != definition.requiredKit ||
+                recipe.outputAmount != 1)
+            {
+                return false;
+            }
+
+            return OwnerHasAll(
+                model,
+                BuildRecipeAmounts(recipe));
+        }
+
+        // 兼容尚未迁移到 RecipeDefinition 的旧 costs。
+        return OwnerHasAll(
+            model,
+            BuildLegacyAmounts(definition, 1f));
+    }
+
+    private static bool OwnerHasAll(
+        InventoryModel model,
+        Dictionary<ItemDefinition, int> amounts)
+    {
+        if (model == null || amounts == null || amounts.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (KeyValuePair<ItemDefinition, int> pair in amounts)
+        {
+            if (pair.Key == null || pair.Value <= 0 ||
+                model.CountItem(pair.Key) < pair.Value)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private NetworkBuildingEntry FindEntry(string buildingId)
     {
         if (entries == null)
@@ -634,12 +739,58 @@ public sealed class NetworkBuildingService : NetworkBehaviour
 
     [ClientRpc]
     private void ShowResultClientRpc(
-        FixedString512Bytes message,
-        ClientRpcParams rpcParams = default)
+    FixedString512Bytes message,
+    ClientRpcParams rpcParams = default)
     {
-        if (IsOwner && ownerToast != null)
+        if (!IsOwner)
         {
-            ownerToast.Show(message.ToString());
+            return;
         }
+
+        string result = message.ToString();
+
+        if (ownerToast != null)
+        {
+            ownerToast.Show(result);
+        }
+
+        OwnerResultReceived?.Invoke(result);
+    }
+
+    public bool ServerTrySpawnRestored(
+    NetworkBuildingSaveData saved,
+    ulong restoredBuilderClientId,
+    out NetworkPlacedBuilding instance)
+    {
+        instance = null;
+
+        if (!IsServer || saved == null ||
+            string.IsNullOrWhiteSpace(saved.buildingId) ||
+            string.IsNullOrWhiteSpace(saved.instanceId))
+        {
+            return false;
+        }
+
+        NetworkBuildingEntry entry = FindEntry(saved.buildingId);
+        if (entry == null || entry.definition == null ||
+            entry.networkPrefab == null)
+        {
+            Debug.LogWarning($"无法恢复建筑：{saved.buildingId}", this);
+            return false;
+        }
+
+        instance = Instantiate(
+            entry.networkPrefab,
+            saved.position,
+            Quaternion.Euler(saved.rotation));
+
+        instance.NetworkObject.Spawn(true);
+        instance.ServerInitialize(
+            restoredBuilderClientId,
+            saved.paymentSource,
+            null,
+            saved.instanceId);
+
+        return true;
     }
 }

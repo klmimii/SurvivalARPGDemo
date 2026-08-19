@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: a31c0134ed3e22840b6fabf5bdfafac5
   m_SerializeEntries:
+  - m_GUID: 01c25fb1cf1783542bfb0669b840f9b1
+    m_Address: config/remote-item-presentation
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - preload
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 99fae9be0aaaa5f4d96d1927d6bf1ab7
     m_Address: Assets/Prefabs/UI/QuestSlotView.prefab
     m_ReadOnly: 0

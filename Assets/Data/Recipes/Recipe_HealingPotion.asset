@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a92af24bbc274b4abae6561642e0851, type: 3}
   m_Name: Recipe_HealingPotion
   m_EditorClassIdentifier: 
-  recipeId: campfire_kit
+  recipeId: healing_potion
   displayName: "\u56DE\u590D\u836F\u6C34"
   description: 
+  unlockItem: {fileID: 0}
   ingredients:
   - item: {fileID: 11400000, guid: 6f053d30238f5cc4691a329616fe9ed2, type: 2}
     amount: 2

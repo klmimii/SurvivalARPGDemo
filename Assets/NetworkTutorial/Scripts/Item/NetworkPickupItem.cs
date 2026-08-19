@@ -134,6 +134,14 @@ public sealed class NetworkPickupItem :
             return;
         }
 
+        NetworkQuestService questService =
+    playerObject.GetComponent<NetworkQuestService>();
+
+        questService?.ServerAddProgress(
+            QuestObjectiveType.ObtainItem,
+            definition.itemId,
+            amount.Value);
+
         claimed = true;
         NetworkObject.Despawn(true);
     }

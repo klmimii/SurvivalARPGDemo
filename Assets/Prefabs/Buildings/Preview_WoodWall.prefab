@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1588251602875875466}
   - component: {fileID: 5308162199671691027}
   - component: {fileID: 6020563390203352234}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8778133125173848027}
   - component: {fileID: 8920148050100178978}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Preview_WoodWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

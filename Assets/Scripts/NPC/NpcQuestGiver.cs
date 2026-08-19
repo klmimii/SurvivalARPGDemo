@@ -15,7 +15,10 @@ public class NpcQuestGiver : MonoBehaviour, IInteractable
 
     public string GetPromptText()
     {
-        QuestRuntime runtime = GameBootstrap.QuestService.GetQuest(quest.questId);
+        IQuestService service = QuestServiceContext.Current;
+        QuestRuntime runtime = service != null
+            ? service.GetQuest(quest.questId)
+            : null;
 
         if (runtime == null)
         {

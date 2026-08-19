@@ -5,28 +5,45 @@ public class GameStartupFlow : MonoBehaviour
 {
     [SerializeField] private AddressablesUpdateService updateService;
     [SerializeField] private UpdateView updateView;
-    [SerializeField] private RemoteBalanceLoader remoteBalanceLoader;
+    [SerializeField]
+    private RemoteItemPresentationLoader remoteItemPresentationLoader;
     [Header("After Startup")]
     [Tooltip("单机场景勾选；联机连接场景取消勾选")]
     [SerializeField] private bool enterGameplayAfterStartup = true;
 
     private IEnumerator Start()
     {
-        // 启动页属于 UI：显示鼠标，禁止角色提前操作。
+        Debug.Log("[热更新] 启动流程开始", this);
+
+        // 即使场景中误关了面板，也强制显示
+        updateView.Show();
+        updateView.SetStatus("准备检查资源更新...");
+        updateView.SetProgress(0f);
+
+        // 先显示一帧，避免面板还没有渲染就进入异步检查
+        yield return null;
+
         GameBootstrap.InputMode.SetMode(GameInputMode.UI);
 
         bool succeeded = false;
-        yield return updateService.InitializeAndUpdate(result => succeeded = result);
+        yield return updateService.InitializeAndUpdate(
+            result => succeeded = result);
 
         if (!succeeded)
         {
-            // 第一版停留在错误信息；下一步加 RetryButton 调用 StartCoroutine 重试。
+            Debug.LogError("[热更新] 资源更新失败", this);
             yield break;
         }
 
-        // 先完成 Catalog 更新，再加载远端配置；避免业务资源读取到旧 Catalog。
-        remoteBalanceLoader.LoadAndApply();
+        Debug.Log("[热更新] Addressables 资源准备完成", this);
+
+        remoteItemPresentationLoader.LoadAndApply();
+
+        // 至少显示一小段时间，方便演示时看清结果
+        yield return new WaitForSecondsRealtime(0.8f);
+
         updateView.Hide();
+
         if (enterGameplayAfterStartup)
         {
             GameBootstrap.InputMode.SetMode(GameInputMode.Gameplay);

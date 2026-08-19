@@ -66,8 +66,8 @@ public sealed class NetworkPlayerState : NetworkBehaviour
     {
         characterIndex.OnValueChanged += OnCharacterIndexChanged;
         weaponIndex.OnValueChanged += OnWeaponIndexChanged;
-        currentHealth.OnValueChanged += OnHealthValueChanged;
-        maxHealth.OnValueChanged += OnHealthValueChanged;
+        currentHealth.OnValueChanged += OnCurrentHealthChanged;
+        maxHealth.OnValueChanged += OnMaxHealthChanged;
         moveSpeed.OnValueChanged += OnMoveSpeedChanged;
         grounded.OnValueChanged += OnGroundedChanged;
 
@@ -100,8 +100,8 @@ public sealed class NetworkPlayerState : NetworkBehaviour
     {
         characterIndex.OnValueChanged -= OnCharacterIndexChanged;
         weaponIndex.OnValueChanged -= OnWeaponIndexChanged;
-        currentHealth.OnValueChanged -= OnHealthValueChanged;
-        maxHealth.OnValueChanged -= OnHealthValueChanged;
+        currentHealth.OnValueChanged -= OnCurrentHealthChanged;
+        maxHealth.OnValueChanged -= OnMaxHealthChanged;
         moveSpeed.OnValueChanged -= OnMoveSpeedChanged;
         grounded.OnValueChanged -= OnGroundedChanged;
 
@@ -340,9 +340,6 @@ public sealed class NetworkPlayerState : NetworkBehaviour
         }
     }
 
-    /// <summary>
-    /// 后续怪物和PVP战斗只能在服务器调用这个方法。
-    /// </summary>
     public void ServerTakeDamage(int damage)
     {
         if (!IsServer || damage <= 0 || currentHealth.Value <= 0)
@@ -350,9 +347,27 @@ public sealed class NetworkPlayerState : NetworkBehaviour
             return;
         }
 
+        int healthBefore = currentHealth.Value;
+
         currentHealth.Value = Mathf.Max(
             0,
             currentHealth.Value - damage);
+
+        int appliedDamage = healthBefore - currentHealth.Value;
+        if (appliedDamage <= 0)
+        {
+            return;
+        }
+
+        ClientRpcParams rpcParams = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams
+            {
+                TargetClientIds = new[] { OwnerClientId }
+            }
+        };
+
+        PlayOwnerDamageFeedbackClientRpc(appliedDamage, rpcParams);
     }
 
     public void ServerHeal(int amount)
@@ -367,6 +382,19 @@ public sealed class NetworkPlayerState : NetworkBehaviour
             currentHealth.Value + amount);
     }
 
+    public void ServerRestoreHealth(int savedHealth)
+    {
+        if (!IsServer)
+        {
+            return;
+        }
+
+        currentHealth.Value = Mathf.Clamp(
+            savedHealth,
+            1,
+            maxHealth.Value);
+    }
+
     private void OnCharacterIndexChanged(int previous, int current)
     {
         ApplyCharacter(current);
@@ -377,7 +405,12 @@ public sealed class NetworkPlayerState : NetworkBehaviour
         ApplyWeapon(current);
     }
 
-    private void OnHealthValueChanged(int previous, int current)
+    private void OnCurrentHealthChanged(int previous, int current)
+    {
+        ApplyHealth();
+    }
+
+    private void OnMaxHealthChanged(int previous, int current)
     {
         ApplyHealth();
     }
@@ -460,5 +493,19 @@ public sealed class NetworkPlayerState : NetworkBehaviour
         }
 
         return -1;
+    }
+
+    [ClientRpc]
+    private void PlayOwnerDamageFeedbackClientRpc(
+    int appliedDamage,
+    ClientRpcParams rpcParams = default)
+    {
+        if (!IsOwner || appliedDamage <= 0)
+        {
+            return;
+        }
+
+        // 这里只发布表现，不会再次扣血。
+        CombatService.PublishNetworkDamage(this, appliedDamage);
     }
 }

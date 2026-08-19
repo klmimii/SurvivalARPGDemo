@@ -1,19 +1,14 @@
+using System;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-/// <summary>
-/// 挂在每一种网络建筑Prefab上。
-/// Definition决定它是什么；NetworkVariable保存谁建造、如何支付。
-/// </summary>
 [RequireComponent(typeof(NetworkObject))]
 [RequireComponent(typeof(PlacedBuilding))]
 public sealed class NetworkPlacedBuilding : NetworkBehaviour
 {
-    [SerializeField]
-    private BuildingDefinition definition;
-
-    [SerializeField]
-    private PlacedBuilding placedBuilding;
+    [SerializeField] private BuildingDefinition definition;
+    [SerializeField] private PlacedBuilding placedBuilding;
 
     private readonly NetworkVariable<ulong> builderClientId = new(
         ulong.MaxValue,
@@ -25,11 +20,16 @@ public sealed class NetworkPlacedBuilding : NetworkBehaviour
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Server);
 
-    // 只需要服务器知道依赖关系，不必发给所有客户端。
+    private readonly NetworkVariable<FixedString64Bytes> instanceId = new(
+        default,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Server);
+
     private NetworkPlacedBuilding serverSupport;
 
     public BuildingDefinition Definition => definition;
     public ulong BuilderClientId => builderClientId.Value;
+    public string InstanceId => instanceId.Value.ToString();
 
     public BuildingPaymentSource PaymentSource =>
         (BuildingPaymentSource)paymentSource.Value;
@@ -39,21 +39,21 @@ public sealed class NetworkPlacedBuilding : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         paymentSource.OnValueChanged += OnPaymentSourceChanged;
+        instanceId.OnValueChanged += OnInstanceIdChanged;
         ApplyPlacedBuildingData();
     }
 
     public override void OnNetworkDespawn()
     {
         paymentSource.OnValueChanged -= OnPaymentSourceChanged;
+        instanceId.OnValueChanged -= OnInstanceIdChanged;
     }
 
-    /// <summary>
-    /// 服务器在Spawn后调用，避免在未Spawn的NetworkBehaviour上写NetworkVariable。
-    /// </summary>
     public void ServerInitialize(
         ulong ownerId,
         BuildingPaymentSource source,
-        NetworkPlacedBuilding support)
+        NetworkPlacedBuilding support,
+        string restoredInstanceId = null)
     {
         if (NetworkManager.Singleton == null ||
             !NetworkManager.Singleton.IsServer)
@@ -63,12 +63,31 @@ public sealed class NetworkPlacedBuilding : NetworkBehaviour
 
         builderClientId.Value = ownerId;
         paymentSource.Value = (int)source;
+        instanceId.Value = new FixedString64Bytes(
+            string.IsNullOrWhiteSpace(restoredInstanceId)
+                ? Guid.NewGuid().ToString("N")
+                : restoredInstanceId);
         serverSupport = support;
-
         ApplyPlacedBuildingData();
     }
 
+    public void ServerSetSupport(NetworkPlacedBuilding support)
+    {
+        if (NetworkManager.Singleton != null &&
+            NetworkManager.Singleton.IsServer)
+        {
+            serverSupport = support;
+        }
+    }
+
     private void OnPaymentSourceChanged(int previous, int current)
+    {
+        ApplyPlacedBuildingData();
+    }
+
+    private void OnInstanceIdChanged(
+        FixedString64Bytes previous,
+        FixedString64Bytes current)
     {
         ApplyPlacedBuildingData();
     }
@@ -82,7 +101,8 @@ public sealed class NetworkPlacedBuilding : NetworkBehaviour
 
         placedBuilding.Initialize(
             definition,
-            playerBuilt: true,
-            restoredPaymentSource: PaymentSource);
+            InstanceId,
+            true,
+            PaymentSource);
     }
 }

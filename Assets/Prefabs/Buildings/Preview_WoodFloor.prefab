@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 116086429658996959}
   - component: {fileID: -4864465619159552059}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Preview_WoodFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 2853600352077180684}
   - component: {fileID: 5747551670500142390}
   - component: {fileID: 1658360872190977678}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

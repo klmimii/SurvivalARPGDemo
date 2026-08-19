@@ -2656,6 +2656,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 205786099}
   interactionCollider: {fileID: 1108774857}
+  sceneSaveId: forest_ore_006
 --- !u!1 &212284020
 GameObject:
   m_ObjectHideFlags: 0
@@ -3317,7 +3318,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -23, y: -17}
-  m_SizeDelta: {x: 180.614, y: 90.301}
+  m_SizeDelta: {x: 134, y: 113}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &244739038
 MonoBehaviour:
@@ -3383,8 +3384,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 43c9a4b853e63de4f84954f580503337, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3818,7 +3819,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &296483619
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7125,6 +7126,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 347351684}
   interactionCollider: {fileID: 276577248}
+  sceneSaveId: forest_tree_006
 --- !u!65 &534294351 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 8804218011411493909, guid: 8309e489b30b2254dac76efa88590c1d,
@@ -7251,6 +7253,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 74454939}
   interactionCollider: {fileID: 2049878371}
+  sceneSaveId: forest_ore_001
 --- !u!1 &546455282
 GameObject:
   m_ObjectHideFlags: 0
@@ -7420,6 +7423,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -9001326305349311230, guid: f320eaa0fd60c8f499438835e150d044,
+        type: 3}
+      propertyPath: enemyIdentity
+      value: 
+      objectReference: {fileID: 1577867798}
     - target: {fileID: 1040386732153286887, guid: f320eaa0fd60c8f499438835e150d044,
         type: 3}
       propertyPath: enemyCombat
@@ -9626,6 +9634,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 793168626}
   interactionCollider: {fileID: 1460514625}
+  sceneSaveId: forest_tree_004
 --- !u!4 &717733021 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4682636608469886, guid: 3b60d31026c3499429726eb70ad7cae2,
@@ -10395,6 +10404,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 359496109}
   interactionCollider: {fileID: 534294351}
+  sceneSaveId: forest_ore_002
 --- !u!1 &782919696
 GameObject:
   m_ObjectHideFlags: 0
@@ -11348,7 +11358,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u5173\u95ED"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0276128079e0c2d418578eee3b16a27f, type: 2}
   m_sharedMaterial: {fileID: -8894195304987650246, guid: 0276128079e0c2d418578eee3b16a27f,
@@ -11500,6 +11510,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 1278690813}
   interactionCollider: {fileID: 2060974686}
+  sceneSaveId: forest_plant_002
 --- !u!1 &827033494
 GameObject:
   m_ObjectHideFlags: 0
@@ -18212,6 +18223,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 1830635173}
   interactionCollider: {fileID: 1806428322}
+  sceneSaveId: forest_tree_003
 --- !u!4 &961703796 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4293083544708992, guid: d46fe0b683966bb498b91421b9a63660,
@@ -18330,6 +18342,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 1480639968}
   interactionCollider: {fileID: 463428989}
+  sceneSaveId: forest_tree_001
 --- !u!1 &980396129
 GameObject:
   m_ObjectHideFlags: 0
@@ -20875,6 +20888,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 1239972594}
   interactionCollider: {fileID: 1943559195}
+  sceneSaveId: forest_ore_003
 --- !u!1 &1122550571
 GameObject:
   m_ObjectHideFlags: 0
@@ -21787,7 +21801,7 @@ RectTransform:
   m_Father: {fileID: 854912531}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -23787,6 +23801,51 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 231227816}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1304767083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1304767084}
+  - component: {fileID: 1304767085}
+  m_Layer: 0
+  m_Name: NetworkWorldSaveService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1304767084
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304767083}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1320502813}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1304767085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304767083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8922506e46a065540a1d45c70d553313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toastView: {fileID: 1864039141}
 --- !u!1001 &1311391468
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23884,6 +23943,7 @@ GameObject:
   - component: {fileID: 1320502829}
   - component: {fileID: 1320502830}
   - component: {fileID: 1320502831}
+  - component: {fileID: 1320502832}
   m_Layer: 0
   m_Name: GameSystems
   m_TagString: Untagged
@@ -23923,6 +23983,7 @@ Transform:
   m_Children:
   - {fileID: 225596751}
   - {fileID: 1607211768}
+  - {fileID: 1304767084}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1320502814
@@ -23982,6 +24043,9 @@ MonoBehaviour:
   recipe:
   - {fileID: 11400000, guid: 1a47cf8c1528fc94d92a6f4339239cb2, type: 2}
   - {fileID: 11400000, guid: f3fffbfd45616ed4aa3eecc148363068, type: 2}
+  - {fileID: 11400000, guid: 1af861367bfadb348bb98bdb43df541c, type: 2}
+  - {fileID: 11400000, guid: cc7c0bf0b73a2fb4d880890ec8e797d2, type: 2}
+  - {fileID: 11400000, guid: 4140c5dd9b2fc204a9488ee2e78eb7da, type: 2}
   toastView: {fileID: 1864039141}
 --- !u!114 &1320502817
 MonoBehaviour:
@@ -24129,7 +24193,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1320502811}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4eb70136d3b7b3340936790611643a47, type: 3}
   m_Name: 
@@ -24164,7 +24228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateService: {fileID: 1320502826}
   updateView: {fileID: 296483620}
-  remoteBalanceLoader: {fileID: 1320502825}
+  remoteItemPresentationLoader: {fileID: 1320502832}
   enterGameplayAfterStartup: 0
 --- !u!114 &1320502828
 MonoBehaviour:
@@ -24180,7 +24244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameplayCamera: {fileID: 1031712145}
   toastView: {fileID: 1864039141}
-  menuView: {fileID: 1608020432}
+  menuView: {fileID: 0}
   defaultDefinition: {fileID: 11400000, guid: edcafa3a57814a14b8e94cfaa82bff16, type: 2}
   toggleBuildModeAction: {fileID: -8982222103911538804, guid: 4f14bc171636de64b822b4479cde2677,
     type: 3}
@@ -24266,7 +24330,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitEnemyClip: {fileID: 8300000, guid: 49b2b03b86d9c064e9db14187aae5053, type: 3}
   playerHurtClip: {fileID: 8300000, guid: 8663d09718f5c3d48ab084209035f617, type: 3}
-  hitVolume: 0.7
+  hitVolume: 1
+--- !u!114 &1320502832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320502811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 519ea2ef234b24043af4a201e08dde2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  configAddress: config/remote-item-presentation
+  toastView: {fileID: 1864039141}
 --- !u!1001 &1322723789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26344,6 +26422,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 1194145617}
   interactionCollider: {fileID: 49094724}
+  sceneSaveId: forest_plant_001
 --- !u!1 &1488147924 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4945060514423419242, guid: 44e903ba6383f5f4da5bca3cfea21253,
@@ -26402,7 +26481,7 @@ RectTransform:
   m_Father: {fileID: 750457312}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -28929,6 +29008,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1574452773}
   m_CullTransparentMesh: 1
+--- !u!114 &1577867798 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5889468396829820865, guid: f320eaa0fd60c8f499438835e150d044,
+    type: 3}
+  m_PrefabInstance: {fileID: 563016723}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 139075e96cbc1584093acf554ad08356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1582286465 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4647924438247260, guid: a60ce8c2c0ff05641a997df273098218,
@@ -29155,7 +29246,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1608020431}
   - component: {fileID: 1608020433}
-  - component: {fileID: 1608020432}
   m_Layer: 5
   m_Name: BuildPanel
   m_TagString: Untagged
@@ -29170,7 +29260,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1608020430}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -29183,37 +29273,13 @@ RectTransform:
   - {fileID: 698117554}
   - {fileID: 1750625845}
   - {fileID: 1825491138}
-  m_Father: {fileID: 1723253832}
+  m_Father: {fileID: 2094301375}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1817.9904, y: 980}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1608020432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1608020430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8fe8fd0ecc7d574090a9e17518e6acf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panelRoot: {fileID: 1608020430}
-  entries:
-  - button: {fileID: 1173755103}
-    definition: {fileID: 11400000, guid: edcafa3a57814a14b8e94cfaa82bff16, type: 2}
-  - button: {fileID: 2032992785}
-    definition: {fileID: 11400000, guid: 3005e8feea9b9dd4792c91deeddd4343, type: 2}
-  - button: {fileID: 1908680189}
-    definition: {fileID: 11400000, guid: 7b77fd7506fd8e345904d8ac2052755e, type: 2}
-  - button: {fileID: 698117555}
-    definition: {fileID: 11400000, guid: d621bdd5038a3d54298b9d4aaa0fa529, type: 2}
-  demolishButton: {fileID: 1750625846}
-  closeButton: {fileID: 1825491139}
 --- !u!222 &1608020433
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -31085,7 +31151,7 @@ RectTransform:
   - {fileID: 276775967}
   - {fileID: 501497872}
   - {fileID: 296483619}
-  - {fileID: 1608020431}
+  - {fileID: 2094301375}
   - {fileID: 1531605183}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -31744,6 +31810,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 6530490}
   interactionCollider: {fileID: 534575979}
+  sceneSaveId: forest_tree_005
 --- !u!1001 &1795254068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31918,6 +31985,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 267101518}
   interactionCollider: {fileID: 949810320}
+  sceneSaveId: forest_tree_002
 --- !u!1001 &1798894594
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32084,8 +32152,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.007910695, y: -53.65}
-  m_SizeDelta: {x: 1919.8, y: 267.57843}
+  m_AnchoredPosition: {x: 0.007910695, y: 11.142}
+  m_SizeDelta: {x: 1919.8, y: 579.427}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1804900915
 MonoBehaviour:
@@ -33107,8 +33175,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -33723,6 +33791,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 727627614}
   interactionCollider: {fileID: 124338132}
+  sceneSaveId: forest_ore_005
 --- !u!1 &1907379747
 GameObject:
   m_ObjectHideFlags: 0
@@ -34309,6 +34378,7 @@ MonoBehaviour:
   refreshSeconds: 20
   visualRoot: {fileID: 1675307569}
   interactionCollider: {fileID: 1038196373}
+  sceneSaveId: forest_ore_004
 --- !u!4 &1938326456 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4966585031206842, guid: d1ab1c753495e5b4a8f0bd4f6e3bfc35,
@@ -36778,6 +36848,67 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1570715816}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2094301374
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2094301375}
+  - component: {fileID: 2094301376}
+  m_Layer: 5
+  m_Name: BuildMenuController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2094301375
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094301374}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1608020431}
+  m_Father: {fileID: 1723253832}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2094301376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094301374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8fe8fd0ecc7d574090a9e17518e6acf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelRoot: {fileID: 1608020430}
+  entries:
+  - button: {fileID: 1173755103}
+    definition: {fileID: 11400000, guid: edcafa3a57814a14b8e94cfaa82bff16, type: 2}
+  - button: {fileID: 2032992785}
+    definition: {fileID: 11400000, guid: 3005e8feea9b9dd4792c91deeddd4343, type: 2}
+  - button: {fileID: 1908680189}
+    definition: {fileID: 11400000, guid: 7b77fd7506fd8e345904d8ac2052755e, type: 2}
+  - button: {fileID: 698117555}
+    definition: {fileID: 11400000, guid: d621bdd5038a3d54298b9d4aaa0fa529, type: 2}
+  demolishButton: {fileID: 1750625846}
+  closeButton: {fileID: 1825491139}
 --- !u!4 &2095633773 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4713390655803436, guid: 58627b1da001ade46b8a44d4fb93412b,

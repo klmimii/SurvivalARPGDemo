@@ -15,15 +15,25 @@ public class AddressablesUpdateService : MonoBehaviour
         updateView.SetStatus("正在初始化资源系统...");
         updateView.SetProgress(0f);
 
-        AsyncOperationHandle initializeHandle = Addressables.InitializeAsync();
+        // false 表示不要自动释放，后面由我们手动释放
+        AsyncOperationHandle initializeHandle =
+            Addressables.InitializeAsync(false);
+
         yield return initializeHandle;
 
         if (initializeHandle.Status != AsyncOperationStatus.Succeeded)
         {
             updateView.SetStatus("资源系统初始化失败。");
+            Debug.LogError("[热更新] Addressables 初始化失败", this);
+
+            Addressables.Release(initializeHandle);
+
             completed?.Invoke(false);
             yield break;
         }
+
+        // 使用结束后手动释放
+        Addressables.Release(initializeHandle);
 
         updateView.SetStatus("正在检查资源更新...");
         AsyncOperationHandle<List<string>> checkHandle = Addressables.CheckForCatalogUpdates(false);

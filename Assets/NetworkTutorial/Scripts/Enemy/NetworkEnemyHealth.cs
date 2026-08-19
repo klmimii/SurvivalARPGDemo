@@ -43,6 +43,13 @@ public sealed class NetworkEnemyHealth : NetworkBehaviour
     [SerializeField]
     private int dropAmount = 1;
 
+    [Header("Quest Identity")]
+    [SerializeField] private EnemyIdentity enemyIdentity;
+    [SerializeField] private bool countsAsBoss;
+    [SerializeField] private string bossId;
+
+    private NetworkObject lastAttacker;
+
     private readonly NetworkVariable<int> currentHealth = new(
         100,
         NetworkVariableReadPermission.Everyone,
@@ -73,6 +80,7 @@ public sealed class NetworkEnemyHealth : NetworkBehaviour
             maxHealth.Value = Mathf.Max(1, configuredMaxHealth);
             currentHealth.Value = maxHealth.Value;
             dead.Value = false;
+            lastAttacker = null;
         }
 
         ApplyHealthPresentation();
@@ -97,6 +105,11 @@ public sealed class NetworkEnemyHealth : NetworkBehaviour
         if (!IsServer || damage <= 0 || dead.Value)
         {
             return false;
+        }
+
+        if (attacker != null)
+        {
+            lastAttacker = attacker;
         }
 
         currentHealth.Value = Mathf.Max(
@@ -144,7 +157,7 @@ public sealed class NetworkEnemyHealth : NetworkBehaviour
         {
             enemyAI.ServerStopForDeath();
         }
-
+        ServerReportQuestProgress();
         ServerSpawnDrop();
         StartCoroutine(ServerDespawnRoutine());
     }
@@ -218,6 +231,44 @@ public sealed class NetworkEnemyHealth : NetworkBehaviour
             {
                 targetCollider.enabled = !value;
             }
+        }
+    }
+
+    private void ServerReportQuestProgress()
+    {
+        if (!IsServer || lastAttacker == null)
+        {
+            return;
+        }
+
+        NetworkQuestService questService =
+            lastAttacker.GetComponent<NetworkQuestService>();
+
+        if (questService == null)
+        {
+            return;
+        }
+
+        if (countsAsBoss)
+        {
+            if (!string.IsNullOrWhiteSpace(bossId))
+            {
+                questService.ServerAddProgress(
+                    QuestObjectiveType.KillBoss,
+                    bossId,
+                    1);
+            }
+
+            return;
+        }
+
+        if (enemyIdentity != null &&
+            !string.IsNullOrWhiteSpace(enemyIdentity.EnemyId))
+        {
+            questService.ServerAddProgress(
+                QuestObjectiveType.KillEnemy,
+                enemyIdentity.EnemyId,
+                1);
         }
     }
 }

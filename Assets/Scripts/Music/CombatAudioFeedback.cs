@@ -26,12 +26,14 @@ public class CombatAudioFeedback : MonoBehaviour
         bool playerWasHit = damageEvent.TargetIdentity != null &&
             damageEvent.TargetIdentity.Faction == CombatFaction.Player;
 
-        AudioClip clip = playerWasHit
-            ? playerHurtClip
-            : hitEnemyClip;
+        if (playerWasHit)
+        {
+            GameBootstrap.Audio.PlaySfx2D(playerHurtClip, hitVolume);
+            return;
+        }
 
         GameBootstrap.Audio.PlaySfxAt(
-            clip,
+            hitEnemyClip,
             damageEvent.WorldPosition,
             hitVolume);
     }

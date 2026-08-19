@@ -460,6 +460,22 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: -8438725319675385818}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b44a88fb7f7830a44a499a05b2712ac4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6828817170437299737}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b44a88fb7f7830a44a499a05b2712ac4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8205441181684779123}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b44a88fb7f7830a44a499a05b2712ac4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 822086449078839896}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b44a88fb7f7830a44a499a05b2712ac4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2629740980426698902}
   m_SourcePrefab: {fileID: 100100000, guid: b44a88fb7f7830a44a499a05b2712ac4, type: 3}
 --- !u!4 &493761574453701194 stripped
 Transform:
@@ -861,7 +877,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977810146027417840}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6fd47b49014d3b04380ad5675427f79f, type: 3}
   m_Name: 
@@ -927,7 +943,7 @@ MonoBehaviour:
     m_Bits: 1536
   blockingLayers:
     serializedVersion: 2
-    m_Bits: 12800
+    m_Bits: 12864
   groundCheckHeight: 2
   groundCheckDistance: 4
 --- !u!114 &-8438725319675385818
@@ -937,7 +953,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977810146027417840}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76b29e0895e94a242b1fedaa501e6eb4, type: 3}
   m_Name: 
@@ -949,6 +965,97 @@ MonoBehaviour:
   buildingLayers:
     serializedVersion: 2
     m_Bits: 512
+--- !u!114 &6828817170437299737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977810146027417840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73232a9cb1e696f4c86487007668615f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingService: {fileID: -121625013338181483}
+  defaultDefinition: {fileID: 11400000, guid: edcafa3a57814a14b8e94cfaa82bff16, type: 2}
+  toggleBuildModeAction: {fileID: -8982222103911538804, guid: 4f14bc171636de64b822b4479cde2677,
+    type: 3}
+  placeBuildingAction: {fileID: -243027463666904044, guid: 4f14bc171636de64b822b4479cde2677,
+    type: 3}
+  rotateBuildingAction: {fileID: 7437287089998969365, guid: 4f14bc171636de64b822b4479cde2677,
+    type: 3}
+  toggleDemolishAction: {fileID: 4383710788491895928, guid: 4f14bc171636de64b822b4479cde2677,
+    type: 3}
+  cancelBuildAction: {fileID: -6384826181160938023, guid: 4f14bc171636de64b822b4479cde2677,
+    type: 3}
+  placementRayLayers:
+    serializedVersion: 2
+    m_Bits: 1536
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  buildingLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  blockingLayers:
+    serializedVersion: 2
+    m_Bits: 12864
+  pointerRayDistance: 100
+  maxPlaceDistance: 8
+--- !u!114 &-8205441181684779123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977810146027417840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64ae9f5bb1450d74ab95bb6e9ecc607b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questCatalog:
+  - {fileID: 11400000, guid: c7e69e355ed1bca41ab860454308670e, type: 2}
+  autoAcceptedQuests: []
+  inventory: {fileID: 382351529692637198}
+--- !u!114 &822086449078839896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977810146027417840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b0ee32376a34246924eacd1dd00045, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recipeCatalog:
+  - {fileID: 11400000, guid: 1a47cf8c1528fc94d92a6f4339239cb2, type: 2}
+  - {fileID: 11400000, guid: f3fffbfd45616ed4aa3eecc148363068, type: 2}
+  - {fileID: 11400000, guid: 1af861367bfadb348bb98bdb43df541c, type: 2}
+  - {fileID: 11400000, guid: cc7c0bf0b73a2fb4d880890ec8e797d2, type: 2}
+  - {fileID: 11400000, guid: 4140c5dd9b2fc204a9488ee2e78eb7da, type: 2}
+  inventory: {fileID: 382351529692637198}
+  questService: {fileID: -8205441181684779123}
+--- !u!114 &-2629740980426698902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977810146027417840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ca42d1d545d05409bd52c91d08572d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usePotionAction: {fileID: 8136973115241654208, guid: 4f14bc171636de64b822b4479cde2677,
+    type: 3}
+  healingPotion: {fileID: 11400000, guid: e7efc72acffca624e867d642dd1f2b92, type: 2}
+  inventory: {fileID: 382351529692637198}
+  playerState: {fileID: -1265895009497127001}
 --- !u!4 &1793879875398562409 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: b44a88fb7f7830a44a499a05b2712ac4,
