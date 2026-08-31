@@ -28,6 +28,7 @@ public sealed class RelayConnectionView : MonoBehaviour
 
     private void Awake()
     {
+        //绑定每个按钮的监听事件
         createWorldButton.onClick.AddListener(OnCreateClicked);
         copyCodeButton.onClick.AddListener(OnCopyClicked);
         joinWorldButton.onClick.AddListener(OnJoinClicked);
@@ -49,26 +50,34 @@ public sealed class RelayConnectionView : MonoBehaviour
 
     public void SetJoinCode(string joinCode)
     {
+        //？？的意思是如果左边的值不为空就用左边的值，否则用右边的值
         currentHostJoinCode = joinCode ?? string.Empty;
-
+        //如果加入码不为空
         bool hasCode = !string.IsNullOrWhiteSpace(currentHostJoinCode);
-
+        //那么使用GUIUtility中的静态属性systemCopyBuffer，将字符串复制到系统剪贴板。自动复制一次加入码
         if (hasCode)
         {
             GUIUtility.systemCopyBuffer = currentHostJoinCode;
         }
-
-        hostJoinCodeText.text = hasCode
-            ? "加入码：" + currentHostJoinCode
-            : "加入码：尚未创建";
+        //更新加入码区域文本
+        hostJoinCodeText.text = hasCode ? "加入码：" + currentHostJoinCode : "加入码：尚未创建";
+        //复制按钮根据是否有hasCode不能点击或能点击
         copyCodeButton.interactable = hasCode;
     }
 
+    /// <summary>
+    /// 设置状态文本文字
+    /// </summary>
+    /// <param name="message"></param>
     public void SetStatus(string message)
     {
         statusText.text = message ?? string.Empty;
     }
 
+    /// <summary>
+    /// 设置如果在处理网络操作，按钮都不可点击
+    /// </summary>
+    /// <param name="busy"></param>
     public void SetBusy(bool busy)
     {
         if (busy)
@@ -79,6 +88,10 @@ public sealed class RelayConnectionView : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 根据设置会话状态设置按钮，如果在房间只有离开房间可以点击，否则只有离开房间不能点击
+    /// </summary>
+    /// <param name="active"></param>
     public void SetSessionActive(bool active)
     {
         createWorldButton.interactable = !active;
@@ -87,19 +100,28 @@ public sealed class RelayConnectionView : MonoBehaviour
         leaveWorldButton.interactable = active;
     }
 
+    /// <summary>
+    /// 恢复按钮
+    /// </summary>
+    /// <param name="sessionActive">当前玩家是否在房间中</param>
+    /// <param name="busy">当前是否正在执行网络操作（创建/加入/离开）</param>
     public void RestoreButtons(bool sessionActive, bool busy)
     {
+        //根据是否正在处理网络操作，控制所有按钮是否可点击
         if (busy)
         {
             SetBusy(true);
             return;
         }
-
+        //根据是否在房间中，控制创建加入离开按钮组
         SetSessionActive(sessionActive);
-        copyCodeButton.interactable =
-            !string.IsNullOrWhiteSpace(currentHostJoinCode);
+        //复制按钮根据当前加入码区域是否有文字决定
+        copyCodeButton.interactable = !string.IsNullOrWhiteSpace(currentHostJoinCode);
     }
 
+    /// <summary>
+    /// 复制当前代码到剪贴板方法
+    /// </summary>
     public void CopyCurrentCodeToClipboard()
     {
         if (string.IsNullOrWhiteSpace(currentHostJoinCode))

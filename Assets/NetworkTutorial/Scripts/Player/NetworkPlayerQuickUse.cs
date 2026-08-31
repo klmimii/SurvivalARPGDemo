@@ -52,6 +52,9 @@ public sealed class NetworkPlayerQuickUse : NetworkBehaviour
         UnsubscribeInput();
     }
 
+    /// <summary>
+    /// 启用InputAction，然后吧OnUsePotion方法绑定到按键的performed事件上。
+    /// </summary>
     private void SubscribeInput()
     {
         if (inputSubscribed || usePotionAction == null)
@@ -64,6 +67,9 @@ public sealed class NetworkPlayerQuickUse : NetworkBehaviour
         inputSubscribed = true;
     }
 
+    /// <summary>
+    /// 取消OnUsePotion的绑定，然后禁用InputAciton
+    /// </summary>
     private void UnsubscribeInput()
     {
         if (!inputSubscribed || usePotionAction == null)
@@ -76,6 +82,10 @@ public sealed class NetworkPlayerQuickUse : NetworkBehaviour
         inputSubscribed = false;
     }
 
+    /// <summary>
+    /// 本机玩家按下设定的按键时触发
+    /// </summary>
+    /// <param name="context"></param>
     private void OnUsePotion(InputAction.CallbackContext context)
     {
         if (!IsOwner || !IsSpawned)
@@ -84,8 +94,7 @@ public sealed class NetworkPlayerQuickUse : NetworkBehaviour
         }
 
         // 打开背包、NPC 或建造菜单时不响应 H，避免输入穿透 UI。
-        if (GameBootstrap.InputMode != null &&
-            !GameBootstrap.InputMode.IsGameplay())
+        if (GameBootstrap.InputMode != null && !GameBootstrap.InputMode.IsGameplay())
         {
             return;
         }
@@ -93,6 +102,10 @@ public sealed class NetworkPlayerQuickUse : NetworkBehaviour
         RequestUsePotionServerRpc();
     }
 
+    /// <summary>
+    /// 在服务器上执行，负责校验和处理使用药剂的完整逻辑
+    /// </summary>
+    /// <param name="rpcParams"></param>
     [ServerRpc]
     private void RequestUsePotionServerRpc(
         ServerRpcParams rpcParams = default)
@@ -151,11 +164,14 @@ public sealed class NetworkPlayerQuickUse : NetworkBehaviour
             return;
         }
 
-        ServerSendResult(
-            senderId,
-            $"使用{healingPotion.displayName}，恢复{actualHeal}点生命。");
+        ServerSendResult(senderId, $"使用{healingPotion.displayName}，恢复{actualHeal}点生命。");
     }
 
+    /// <summary>
+    /// 服务器上调用，	构造一个 定向 ClientRpc，只发给 targetClientId 对应的那个客户端，然后调用 ShowResultClientRpc
+    /// </summary>
+    /// <param name="targetClientId"></param>
+    /// <param name="message"></param>
     private void ServerSendResult(ulong targetClientId, string message)
     {
         ClientRpcParams rpcParams = new ClientRpcParams
@@ -169,10 +185,13 @@ public sealed class NetworkPlayerQuickUse : NetworkBehaviour
         ShowResultClientRpc(new FixedString512Bytes(message), rpcParams);
     }
 
+    /// <summary>
+    /// 所有客户端都会收到，但通过 rpcParams 限制了只有目标客户端会真正处理，判断 IsOwner，如果自己是本机玩家并且 ownerToast 不为空，就在屏幕上显示提示文字
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="rpcParams"></param>
     [ClientRpc]
-    private void ShowResultClientRpc(
-        FixedString512Bytes message,
-        ClientRpcParams rpcParams = default)
+    private void ShowResultClientRpc( FixedString512Bytes message,ClientRpcParams rpcParams = default)
     {
         if (IsOwner && ownerToast != null)
         {

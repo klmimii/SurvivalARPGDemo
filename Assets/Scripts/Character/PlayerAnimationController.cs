@@ -44,19 +44,12 @@ public class PlayerAnimationController : MonoBehaviour
             return;
         }
 
-        float speedValue = useNetworkLocomotion
-            ? networkMoveSpeed
-            : playerController.NormalizedMoveSpeed;
+        //useNetworkLocomotion使用网络移动，如果为true则用networkSpeed，否则用playercontroller里的移动速度
+        float speedValue = useNetworkLocomotion ? networkMoveSpeed : playerController.NormalizedMoveSpeed;
 
-        bool groundedValue = useNetworkLocomotion
-            ? networkGrounded
-            : playerController.IsGrounded;
+        bool groundedValue = useNetworkLocomotion ? networkGrounded : playerController.IsGrounded;
 
-        animator.SetFloat(
-            Speed,
-            speedValue,
-            0.1f,
-            Time.deltaTime);
+        animator.SetFloat(Speed, speedValue, 0.1f, Time.deltaTime);
 
         animator.SetBool(IsGrounded, groundedValue);
     }

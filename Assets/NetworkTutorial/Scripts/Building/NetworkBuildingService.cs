@@ -87,27 +87,20 @@ public sealed class NetworkBuildingService : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void RequestPlaceServerRpc(
-        FixedString64Bytes buildingId,
-        Vector3 requestedPosition,
-        Quaternion requestedRotation,
-        ServerRpcParams rpcParams = default)
+    private void RequestPlaceServerRpc( FixedString64Bytes buildingId, Vector3 requestedPosition, Quaternion requestedRotation,ServerRpcParams rpcParams = default)
     {
         ulong senderId = rpcParams.Receive.SenderClientId;
-        NetworkObject playerObject =
-            NetworkManager.SpawnManager.GetPlayerNetworkObject(senderId);
+        NetworkObject playerObject = NetworkManager.SpawnManager.GetPlayerNetworkObject(senderId);
 
         NetworkBuildingEntry entry = FindEntry(buildingId.ToString());
 
-        if (playerObject == null || entry == null ||
-            entry.definition == null || entry.networkPrefab == null)
+        if (playerObject == null || entry == null || entry.definition == null || entry.networkPrefab == null)
         {
             ServerSendResult(senderId, "服务器没有找到该建筑配置。");
             return;
         }
 
-        if ((requestedPosition - playerObject.transform.position)
-            .sqrMagnitude > maximumBuildDistance * maximumBuildDistance)
+        if ((requestedPosition - playerObject.transform.position).sqrMagnitude > maximumBuildDistance * maximumBuildDistance)
         {
             ServerSendResult(senderId, "放置位置离玩家太远。");
             return;
@@ -115,14 +108,10 @@ public sealed class NetworkBuildingService : NetworkBehaviour
 
         BuildingDefinition definition = entry.definition;
 
-        // 服务器不接受任意倾斜，只保留最接近90度倍数的Y旋转。
-        float safeYaw = Mathf.Round(
-            requestedRotation.eulerAngles.y / 90f) * 90f;
+        float safeYaw = Mathf.Round(requestedRotation.eulerAngles.y / 90f) * 90f;
         Quaternion safeRotation = Quaternion.Euler(0f, safeYaw, 0f);
 
-        Vector3 safePosition = SnapPositionToGrid(
-            requestedPosition,
-            definition.gridSize);
+        Vector3 safePosition = SnapPositionToGrid(requestedPosition,definition.gridSize);
 
         BuildingSocket selectedSocket = null;
         PlacedBuilding ignoredSupport = null;
@@ -130,20 +119,14 @@ public sealed class NetworkBuildingService : NetworkBehaviour
 
         if (definition.allowSnapping)
         {
-            selectedSocket = BuildingSocket.FindBest(
-                definition.pieceType,
-                safePosition,
-                definition.snapSearchRadius);
+            selectedSocket = BuildingSocket.FindBest(definition.pieceType,safePosition,definition.snapSearchRadius);
 
             if (selectedSocket != null)
             {
                 safePosition = selectedSocket.transform.position;
-                safeRotation = selectedSocket.transform.rotation *
-                    Quaternion.Euler(0f, safeYaw, 0f);
+                safeRotation = selectedSocket.transform.rotation * Quaternion.Euler(0f, safeYaw, 0f);
                 ignoredSupport = selectedSocket.Owner;
-                networkSupport = ignoredSupport != null
-                    ? ignoredSupport.GetComponent<NetworkPlacedBuilding>()
-                    : null;
+                networkSupport = ignoredSupport != null ? ignoredSupport.GetComponent<NetworkPlacedBuilding>() : null;
             }
         }
 
@@ -155,36 +138,22 @@ public sealed class NetworkBuildingService : NetworkBehaviour
 
         // 找到兼容且未占用的Socket时，Socket本身就是合法支撑。
         // 只有自由放置时，才继续检查Ground/Floor表面。
-        if (selectedSocket == null &&
-            !ServerValidateSurface(
-                definition,
-                safePosition,
-                ref ignoredSupport,
-                ref networkSupport))
+        if (selectedSocket == null && !ServerValidateSurface(definition,safePosition,ref ignoredSupport,ref networkSupport))
         {
             ServerSendResult(senderId, "建筑表面类型不允许。");
             return;
         }
 
         // 地板拼接时不能忽略相邻地板；墙和家具可以忽略支撑地板。
-        PlacedBuilding validatorIgnoredSupport =
-            definition.pieceType == BuildingPieceType.Floor
-                ? null
-                : ignoredSupport;
+        PlacedBuilding validatorIgnoredSupport = definition.pieceType == BuildingPieceType.Floor ? null : ignoredSupport;
 
-        if (!BuildingPlacementValidator.IsAreaFree(
-                definition,
-                safePosition,
-                safeRotation,
-                blockingLayers,
-                validatorIgnoredSupport))
+        if (!BuildingPlacementValidator.IsAreaFree(definition,safePosition,safeRotation,blockingLayers,validatorIgnoredSupport))
         {
             ServerSendResult(senderId, "该位置已被其他物体阻挡。");
             return;
         }
 
-        NetworkPlayerInventory inventory =
-            playerObject.GetComponent<NetworkPlayerInventory>();
+        NetworkPlayerInventory inventory = playerObject.GetComponent<NetworkPlayerInventory>();
 
         // 必须单独判空。若写成 inventory == null || ServerTryConsume...，
         // 短路求值会导致 paymentMessage 没有赋值，引发 CS0165。
@@ -194,20 +163,13 @@ public sealed class NetworkBuildingService : NetworkBehaviour
             return;
         }
 
-        if (!ServerTryConsumeCost(
-                inventory,
-                definition,
-                out BuildingPaymentSource payment,
-                out string paymentMessage))
+        if (!ServerTryConsumeCost(inventory,definition,out BuildingPaymentSource payment,out string paymentMessage))
         {
             ServerSendResult(senderId, paymentMessage);
             return;
         }
 
-        NetworkPlacedBuilding instance = Instantiate(
-            entry.networkPrefab,
-            safePosition,
-            safeRotation);
+        NetworkPlacedBuilding instance = Instantiate(entry.networkPrefab,safePosition,safeRotation);
 
         // 必须先Spawn，再写NetworkVariable。
         // 否则NGO会警告 NetworkVariable is written to, but NetworkBehaviour is not spawned。
@@ -215,8 +177,7 @@ public sealed class NetworkBuildingService : NetworkBehaviour
         instance.ServerInitialize(senderId, payment, networkSupport);
 
         PlacedBuilding placed = instance.GetComponent<PlacedBuilding>();
-        bool socketReserved = selectedSocket == null ||
-            (placed != null && selectedSocket.TryReserve(placed));
+        bool socketReserved = selectedSocket == null || (placed != null && selectedSocket.TryReserve(placed));
 
         if (!socketReserved)
         {
@@ -226,40 +187,28 @@ public sealed class NetworkBuildingService : NetworkBehaviour
             return;
         }
 
-        NetworkQuestService questService =
-    playerObject.GetComponent<NetworkQuestService>();
+        NetworkQuestService questService = playerObject.GetComponent<NetworkQuestService>();
 
-        questService?.ServerAddProgress(
-            QuestObjectiveType.BuildBuilding,
-            definition.buildingId,
-            1);
+        questService?.ServerAddProgress(QuestObjectiveType.BuildBuilding, definition.buildingId, 1);
 
-        ServerSendResult(
-            senderId,
-            $"已建造{definition.displayName}。{paymentMessage}");
+        ServerSendResult(senderId, $"已建造{definition.displayName}。{paymentMessage}");
     }
 
     [ServerRpc]
-    private void RequestDemolishServerRpc(
-        NetworkObjectReference targetReference,
-        ServerRpcParams rpcParams = default)
+    private void RequestDemolishServerRpc(NetworkObjectReference targetReference,ServerRpcParams rpcParams = default)
     {
         ulong senderId = rpcParams.Receive.SenderClientId;
 
-        if (!targetReference.TryGet(out NetworkObject targetObject) ||
-            targetObject == null)
+        if (!targetReference.TryGet(out NetworkObject targetObject) || targetObject == null)
         {
             ServerSendResult(senderId, "目标建筑已经不存在。");
             return;
         }
 
-        NetworkPlacedBuilding target =
-            targetObject.GetComponent<NetworkPlacedBuilding>();
-        NetworkObject playerObject =
-            NetworkManager.SpawnManager.GetPlayerNetworkObject(senderId);
+        NetworkPlacedBuilding target = targetObject.GetComponent<NetworkPlacedBuilding>();
+        NetworkObject playerObject = NetworkManager.SpawnManager.GetPlayerNetworkObject(senderId);
 
-        if (target == null || playerObject == null ||
-            target.Definition == null)
+        if (target == null || playerObject == null || target.Definition == null)
         {
             ServerSendResult(senderId, "目标不是可拆除的网络建筑。");
             return;
@@ -271,8 +220,7 @@ public sealed class NetworkBuildingService : NetworkBehaviour
             return;
         }
 
-        if ((target.transform.position - playerObject.transform.position)
-            .sqrMagnitude > maximumBuildDistance * maximumBuildDistance)
+        if ((target.transform.position - playerObject.transform.position).sqrMagnitude > maximumBuildDistance * maximumBuildDistance)
         {
             ServerSendResult(senderId, "离建筑太远，不能拆除。");
             return;
@@ -284,15 +232,9 @@ public sealed class NetworkBuildingService : NetworkBehaviour
             return;
         }
 
-        NetworkPlayerInventory inventory =
-            playerObject.GetComponent<NetworkPlayerInventory>();
+        NetworkPlayerInventory inventory = playerObject.GetComponent<NetworkPlayerInventory>();
 
-        if (inventory == null ||
-            !ServerTryRefundCost(
-                inventory,
-                target.Definition,
-                target.PaymentSource,
-                false))
+        if (inventory == null || !ServerTryRefundCost(inventory,target.Definition,target.PaymentSource,false))
         {
             ServerSendResult(senderId, "背包空间不足，无法返还材料。");
             return;
@@ -757,16 +699,11 @@ public sealed class NetworkBuildingService : NetworkBehaviour
         OwnerResultReceived?.Invoke(result);
     }
 
-    public bool ServerTrySpawnRestored(
-    NetworkBuildingSaveData saved,
-    ulong restoredBuilderClientId,
-    out NetworkPlacedBuilding instance)
+    public bool ServerTrySpawnRestored( NetworkBuildingSaveData saved,ulong restoredBuilderClientId,out NetworkPlacedBuilding instance)
     {
         instance = null;
 
-        if (!IsServer || saved == null ||
-            string.IsNullOrWhiteSpace(saved.buildingId) ||
-            string.IsNullOrWhiteSpace(saved.instanceId))
+        if (!IsServer || saved == null || string.IsNullOrWhiteSpace(saved.buildingId) || string.IsNullOrWhiteSpace(saved.instanceId))
         {
             return false;
         }

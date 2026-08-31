@@ -253,22 +253,15 @@ public sealed class NetworkEnemyHealth : NetworkBehaviour
         {
             if (!string.IsNullOrWhiteSpace(bossId))
             {
-                questService.ServerAddProgress(
-                    QuestObjectiveType.KillBoss,
-                    bossId,
-                    1);
+                questService.ServerAddProgress( QuestObjectiveType.KillBoss,bossId,1);
             }
 
             return;
         }
 
-        if (enemyIdentity != null &&
-            !string.IsNullOrWhiteSpace(enemyIdentity.EnemyId))
+        if (enemyIdentity != null && !string.IsNullOrWhiteSpace(enemyIdentity.EnemyId))
         {
-            questService.ServerAddProgress(
-                QuestObjectiveType.KillEnemy,
-                enemyIdentity.EnemyId,
-                1);
+            questService.ServerAddProgress( QuestObjectiveType.KillEnemy, enemyIdentity.EnemyId, 1);
         }
     }
 }

@@ -102,10 +102,7 @@ public sealed class NetworkQuestService : NetworkBehaviour
     /// <summary>
     /// 只能由服务器上已经确认成功的玩法代码调用。
     /// </summary>
-    public void ServerAddProgress(
-        QuestObjectiveType type,
-        string targetId,
-        int amount)
+    public void ServerAddProgress(QuestObjectiveType type,string targetId,int amount)
     {
         if (!IsServer || string.IsNullOrWhiteSpace(targetId) || amount <= 0)
         {
@@ -121,8 +118,7 @@ public sealed class NetworkQuestService : NetworkBehaviour
                 continue;
             }
 
-            QuestObjectiveDefinition[] objectives =
-                runtime.Definition.objectives;
+            QuestObjectiveDefinition[] objectives = runtime.Definition.objectives;
 
             for (int i = 0; i < objectives.Length; i++)
             {

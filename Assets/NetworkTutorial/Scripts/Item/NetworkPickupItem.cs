@@ -49,16 +49,11 @@ public sealed class NetworkPickupItem :
     /// <summary>
     /// 只能由服务器在 NetworkObject.Spawn() 前调用。
     /// </summary>
-    public void ServerInitialize(
-        ItemDefinition definition,
-        int itemAmount)
+    public void ServerInitialize(ItemDefinition definition, int itemAmount)
     {
         // 这个方法会在 NetworkObject.Spawn() 前调用，
         // 因此使用 NetworkManager 判断当前进程是不是服务器。
-        if (NetworkManager.Singleton == null ||
-            !NetworkManager.Singleton.IsServer ||
-            definition == null ||
-            string.IsNullOrWhiteSpace(definition.itemId))
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer || definition == null || string.IsNullOrWhiteSpace(definition.itemId))
         {
             return;
         }
@@ -87,8 +82,7 @@ public sealed class NetworkPickupItem :
             return false;
         }
 
-        NetworkObject playerObject =
-            interactor.GetComponentInParent<NetworkObject>();
+        NetworkObject playerObject = interactor.GetComponentInParent<NetworkObject>();
 
         if (playerObject == null || !playerObject.IsOwner)
         {
@@ -108,9 +102,7 @@ public sealed class NetworkPickupItem :
             return;
         }
 
-        NetworkObject playerObject =
-            NetworkManager.SpawnManager.GetPlayerNetworkObject(
-                rpcParams.Receive.SenderClientId);
+        NetworkObject playerObject = NetworkManager.SpawnManager.GetPlayerNetworkObject( rpcParams.Receive.SenderClientId);
 
         if (playerObject == null)
         {
@@ -125,22 +117,16 @@ public sealed class NetworkPickupItem :
         }
 
         ItemDefinition definition = ResolveDefinition();
-        NetworkPlayerInventory inventory =
-            playerObject.GetComponent<NetworkPlayerInventory>();
+        NetworkPlayerInventory inventory = playerObject.GetComponent<NetworkPlayerInventory>();
 
-        if (definition == null || inventory == null ||
-            !inventory.ServerTryAdd(definition, amount.Value))
+        if (definition == null || inventory == null || !inventory.ServerTryAdd(definition, amount.Value))
         {
             return;
         }
 
-        NetworkQuestService questService =
-    playerObject.GetComponent<NetworkQuestService>();
+        NetworkQuestService questService = playerObject.GetComponent<NetworkQuestService>();
 
-        questService?.ServerAddProgress(
-            QuestObjectiveType.ObtainItem,
-            definition.itemId,
-            amount.Value);
+        questService?.ServerAddProgress( QuestObjectiveType.ObtainItem,definition.itemId,amount.Value);
 
         claimed = true;
         NetworkObject.Despawn(true);

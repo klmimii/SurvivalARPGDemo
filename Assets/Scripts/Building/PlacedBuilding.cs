@@ -18,46 +18,27 @@ public class PlacedBuilding : MonoBehaviour
     private BuildingPaymentSource paymentSource =BuildingPaymentSource.Unknown;
 
     public BuildingPaymentSource PaymentSource => paymentSource;
+
     /// <summary>
-    /// 新建或读档生成后调用。
-    /// restoredId为空时创建新的稳定实例ID。
+    /// 把建筑的数据（定义、ID、建造者来源）存到本地组件里，供客户端显示使用
     /// </summary>
-    //public void Initialize(
-    //    BuildingDefinition newDefinition,
-    //    string restoredId = null,
-    //    bool playerBuilt = true)
-    //{
-    //    definition = newDefinition;
-    //    isPlayerBuilt = playerBuilt;
-
-    //    if (!string.IsNullOrWhiteSpace(restoredId))
-    //    {
-    //        instanceId = restoredId;
-    //    }
-    //    else if (string.IsNullOrWhiteSpace(instanceId))
-    //    {
-    //        instanceId = Guid.NewGuid().ToString("N");
-    //    }
-    //}
-
-    public void Initialize(
-    BuildingDefinition newDefinition,
-    string restoredId = null,
-    bool playerBuilt = true,
-    BuildingPaymentSource restoredPaymentSource =
-        BuildingPaymentSource.Unknown)
+    /// <param name="newDefinition"></param>
+    /// <param name="restoredId"></param>
+    /// <param name="playerBuilt"></param>
+    /// <param name="restoredPaymentSource"></param>
+    public void Initialize(BuildingDefinition newDefinition, string restoredId = null,  bool playerBuilt = true, BuildingPaymentSource restoredPaymentSource = BuildingPaymentSource.Unknown)
     {
-        definition = newDefinition;
-        isPlayerBuilt = playerBuilt;
-        paymentSource = restoredPaymentSource;
+        definition = newDefinition;//存建筑配置
+        isPlayerBuilt = playerBuilt;//存是否玩家建造
+        paymentSource = restoredPaymentSource;//存支付方式
 
-        if (!string.IsNullOrWhiteSpace(restoredId))
+        if (!string.IsNullOrWhiteSpace(restoredId))//从存档恢复，用存档里的ID
         {
             instanceId = restoredId;
         }
-        else if (string.IsNullOrWhiteSpace(instanceId))
+        else if (string.IsNullOrWhiteSpace(instanceId))//新建，生成一个新ID
         {
-            instanceId = System.Guid.NewGuid().ToString("N");
+            instanceId = System.Guid.NewGuid().ToString("N");//生成全球唯一的32位字符串ID，赋值给instance ID
         }
     }
 

@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: RemoteItemPresentationConfig
   m_EditorClassIdentifier: 
   contentVersion: 1.0.0
-  updateNote: "\u5F53\u524D\u7269\u54C1\u8D44\u6E90\u7248\u672C\uFF1A1.0.0"
+  updateNote: "\u5F53\u524D\u7269\u54C1\u8D44\u6E90\u7248\u672C\uFF1A1.1.0"
   entries:
   - itemId: wood1_oak
     overrideDisplayName: 1
-    displayName: "\u6A61\u6728"
+    displayName: "\u66F4\u65B0\u540E\uFF1A\u6A61\u6728"
     overrideDescription: 1
-    description: "\u8D28\u5730\u7ED3\u5B9E\u7684\u6A61\u6728\uFF0C\u901A\u7528\u6027\u5F3A\u3002\u9002\u5408\u5236\u4F5C\u5DE5\u5177\u3001\u5BB6\u5177\u4EE5\u53CA\u5404\u7C7B\u5EFA\u7B51\u7ED3\u6784\u3002"
+    description: "\u66F4\u65B0\u540E\u8D28\u5730\u7ED3\u5B9E\u7684\u6A61\u6728\uFF0C\u901A\u7528\u6027\u5F3A\u3002\u9002\u5408\u5236\u4F5C\u5DE5\u5177\u3001\u5BB6\u5177\u4EE5\u53CA\u5404\u7C7B\u5EFA\u7B51\u7ED3\u6784\u3002"
     overrideIcon: 1
-    icon: {fileID: 21300000, guid: d911c1e62b8966042a4540f81e416b7a, type: 3}
+    icon: {fileID: 21300000, guid: 367d534fe06b56c4d8c383691f7d3a59, type: 3}

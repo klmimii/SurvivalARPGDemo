@@ -149,28 +149,21 @@ public sealed class NetworkGatherableNode :
 
         if (distanceSqr > allowedDistanceSqr)
         {
-            Debug.LogWarning(
-                $"拒绝远距离采集：ClientId={senderClientId}",
-                this);
+            Debug.LogWarning($"拒绝远距离采集：ClientId={senderClientId}", this);
             return;
         }
 
         NetworkPlayerInventory inventory =
             playerObject.GetComponent<NetworkPlayerInventory>();
 
-        if (inventory == null ||
-            !inventory.ServerTryAdd(rewardItem, rewardAmount))
+        if (inventory == null || !inventory.ServerTryAdd(rewardItem, rewardAmount))
         {
             return;
         }
 
-        NetworkQuestService questService =
-    playerObject.GetComponent<NetworkQuestService>();
+        NetworkQuestService questService = playerObject.GetComponent<NetworkQuestService>();
 
-        questService?.ServerAddProgress(
-            QuestObjectiveType.ObtainItem,
-            rewardItem.itemId,
-            rewardAmount);
+        questService?.ServerAddProgress( QuestObjectiveType.ObtainItem, rewardItem.itemId, rewardAmount);
 
         // ServerRpc 会在服务器主线程顺序执行。
         // 第一个请求先把 available 改成 false，后续请求就会被拒绝。
@@ -181,8 +174,7 @@ public sealed class NetworkGatherableNode :
             StopCoroutine(refreshRoutine);
         }
 
-        serverAvailableAt =
-    NetworkManager.ServerTime.Time + refreshSeconds;
+        serverAvailableAt = NetworkManager.ServerTime.Time + refreshSeconds;
 
 refreshRoutine = StartCoroutine(
     ServerRefreshRoutine(refreshSeconds));

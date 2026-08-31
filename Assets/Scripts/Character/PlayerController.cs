@@ -230,9 +230,7 @@ public class PlayerController : MonoBehaviour
 
     private bool CanHandleGameplayInput()
     {
-        return acceptLocalInput &&
-               (GameBootstrap.InputMode == null ||
-                GameBootstrap.InputMode.IsGameplay());
+        return acceptLocalInput &&(GameBootstrap.InputMode == null || GameBootstrap.InputMode.IsGameplay());
     }
 
     public void SetAcceptLocalInput(bool value)

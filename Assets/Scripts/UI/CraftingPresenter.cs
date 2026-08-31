@@ -62,8 +62,7 @@ public class CraftingPresenter : MonoBehaviour
 
     private void RefreshIfVisible()
     {
-        if (craftingView != null &&
-            craftingView.gameObject.activeInHierarchy)
+        if (craftingView != null && craftingView.gameObject.activeInHierarchy)
         {
             Refresh();
         }
@@ -81,7 +80,6 @@ public class CraftingPresenter : MonoBehaviour
         CraftingResult result = service.TryCraft(definition);
         toastView.Show(result.Message);
 
-        // 联网操作是异步的。这里先刷新一次；服务器同步背包后还会自动刷新。
         Refresh();
     }
 }

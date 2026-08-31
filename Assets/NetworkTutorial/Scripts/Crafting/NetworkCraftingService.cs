@@ -72,27 +72,21 @@ public sealed class NetworkCraftingService :
 
     public bool IsUnlocked(RecipeDefinition recipe)
     {
-        InventoryModel model = inventory != null
-            ? inventory.OwnerViewModel
-            : null;
+        InventoryModel model = inventory != null ? inventory.OwnerViewModel : null;
 
         if (!IsOwner || model == null || !HasRecipe(recipe))
         {
             return false;
         }
 
-        return recipe.unlockItem == null ||
-            model.CountItem(recipe.unlockItem) > 0;
+        return recipe.unlockItem == null || model.CountItem(recipe.unlockItem) > 0;
     }
 
     public bool CanCraft(RecipeDefinition recipe)
     {
-        InventoryModel model = inventory != null
-            ? inventory.OwnerViewModel
-            : null;
+        InventoryModel model = inventory != null ? inventory.OwnerViewModel : null;
 
-        if (!IsOwner || model == null || !IsUnlocked(recipe) ||
-            recipe.outputItem == null || recipe.outputAmount <= 0)
+        if (!IsOwner || model == null || !IsUnlocked(recipe) || recipe.outputItem == null || recipe.outputAmount <= 0)
         {
             return false;
         }
@@ -111,8 +105,6 @@ public sealed class NetworkCraftingService :
             }
         }
 
-        // 最终容量由服务器在扣料后再验证。
-        // 此处不直接调用 CanAdd，避免“背包当前满，但扣料后会空出格子”的误判。
         return true;
     }
 
@@ -194,19 +186,17 @@ public sealed class NetworkCraftingService :
 
         if (questService != null)
         {
-            questService.ServerAddProgress(
-                QuestObjectiveType.CraftRecipe,
-                recipe.recipeId,
-                1);
+            questService.ServerAddProgress(QuestObjectiveType.CraftRecipe, recipe.recipeId, 1);
         }
 
-        ServerSendResult(
-            senderId,
-            $"合成成功：{recipe.outputItem.displayName} x{recipe.outputAmount}");
+        ServerSendResult( senderId, $"合成成功：{recipe.outputItem.displayName} x{recipe.outputAmount}");
     }
 
-    private void ServerRollback(
-        List<KeyValuePair<ItemDefinition, int>> removed)
+    /// <summary>
+    /// 回滚机制
+    /// </summary>
+    /// <param name="removed"></param>
+    private void ServerRollback(List<KeyValuePair<ItemDefinition, int>> removed)
     {
         foreach (KeyValuePair<ItemDefinition, int> pair in removed)
         {

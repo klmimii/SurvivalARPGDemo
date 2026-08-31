@@ -106,9 +106,7 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
         if (buildingService == null || gameplayCamera == null ||
             menuView == null)
         {
-            Debug.LogError(
-                "联网建造初始化失败：缺少 BuildingService、MainCamera 或 BuildMenuView。",
-                this);
+            Debug.LogError( "联网建造初始化失败：缺少 BuildingService、MainCamera 或 BuildMenuView。", this);
             enabled = false;
             return;
         }
@@ -202,8 +200,7 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
         }
 
         // 在普通Update阶段查询并缓存，避免在InputAction回调中查询UI。
-        pointerOverUi = EventSystem.current != null &&
-            EventSystem.current.IsPointerOverGameObject();
+        pointerOverUi = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
 
         if (!IsBuilding)
         {
@@ -323,8 +320,7 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
             menuView.SetVisible(false);
         }
 
-        if (GameBootstrap.InputMode != null &&
-            GameBootstrap.InputMode.CurrentMode == GameInputMode.Build)
+        if (GameBootstrap.InputMode != null && GameBootstrap.InputMode.CurrentMode == GameInputMode.Build)
         {
             GameBootstrap.InputMode.SetMode(GameInputMode.Gameplay);
             ApplyBuildCursor(false);
@@ -333,8 +329,7 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
 
     public void SelectDefinition(BuildingDefinition definition)
     {
-        if (!IsBuilding || definition == null ||
-            definition.previewPrefab == null)
+        if (!IsBuilding || definition == null || definition.previewPrefab == null)
         {
             return;
         }
@@ -362,9 +357,7 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
 
         if (currentPreview == null)
         {
-            Debug.LogError(
-                $"{definition.previewPrefab.name} 缺少 BuildingPreview。",
-                definition.previewPrefab);
+            Debug.LogError( $"{definition.previewPrefab.name} 缺少 BuildingPreview。",definition.previewPrefab);
             Destroy(previewObject);
             currentDefinition = null;
             return;
@@ -390,28 +383,19 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
             currentPreview.gameObject.SetActive(!demolishMode);
         }
 
-        ShowToast(demolishMode
-            ? "拆除模式：指向自己建造的建筑并点击左键。"
-            : "已返回建造模式。");
+        ShowToast(demolishMode ? "拆除模式：指向自己建造的建筑并点击左键。" : "已返回建造模式。");
     }
 
     private void UpdatePlacementPreview()
     {
-        if (currentDefinition == null || currentPreview == null ||
-            gameplayCamera == null || Mouse.current == null)
+        if (currentDefinition == null || currentPreview == null || gameplayCamera == null || Mouse.current == null)
         {
             return;
         }
 
-        Ray ray = gameplayCamera.ScreenPointToRay(
-            Mouse.current.position.ReadValue());
+        Ray ray = gameplayCamera.ScreenPointToRay( Mouse.current.position.ReadValue());
 
-        if (!Physics.Raycast(
-            ray,
-            out RaycastHit hit,
-            pointerRayDistance,
-            placementRayLayers,
-            QueryTriggerInteraction.Ignore))
+        if (!Physics.Raycast(ray, out RaycastHit hit, pointerRayDistance, placementRayLayers, QueryTriggerInteraction.Ignore))
         {
             currentPreview.gameObject.SetActive(false);
             canPlace = false;
@@ -424,10 +408,7 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
 
         if (currentDefinition.allowSnapping)
         {
-            currentSocket = BuildingSocket.FindBest(
-                currentDefinition.pieceType,
-                hit.point,
-                currentDefinition.snapSearchRadius);
+            currentSocket = BuildingSocket.FindBest( currentDefinition.pieceType, hit.point,currentDefinition.snapSearchRadius);
         }
 
         bool validSurface;
@@ -435,19 +416,15 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
         if (currentSocket != null)
         {
             candidatePosition = currentSocket.transform.position;
-            candidateRotation = currentSocket.transform.rotation *
-                Quaternion.Euler(0f, currentYaw, 0f);
+            candidateRotation = currentSocket.transform.rotation * Quaternion.Euler(0f, currentYaw, 0f);
             currentSupport = currentSocket.Owner;
             validSurface = true;
         }
         else
         {
-            candidatePosition = SnapPositionToGrid(
-                hit.point,
-                currentDefinition.gridSize);
+            candidatePosition = SnapPositionToGrid( hit.point, currentDefinition.gridSize);
             candidateRotation = Quaternion.Euler(0f, currentYaw, 0f);
-            currentSupport =
-                hit.collider.GetComponentInParent<PlacedBuilding>();
+            currentSupport = hit.collider.GetComponentInParent<PlacedBuilding>();
 
             BuildSurfaceType surface = GetSurfaceType(hit);
             validSurface = currentDefinition.AllowsSurface(surface);
@@ -458,17 +435,9 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
             }
         }
 
-        PlacedBuilding ignoredSupport =
-            currentDefinition.pieceType == BuildingPieceType.Floor
-                ? null
-                : currentSupport;
+        PlacedBuilding ignoredSupport = currentDefinition.pieceType == BuildingPieceType.Floor ? null : currentSupport;
 
-        bool areaFree = BuildingPlacementValidator.IsAreaFree(
-            currentDefinition,
-            candidatePosition,
-            candidateRotation,
-            blockingLayers,
-            ignoredSupport);
+        bool areaFree = BuildingPlacementValidator.IsAreaFree( currentDefinition, candidatePosition, candidateRotation,blockingLayers, ignoredSupport);
 
         // 同时按照玩家位置限制距离，规则与服务器一致。
         bool withinPlayerDistance =
@@ -479,14 +448,11 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
         // 每0.1秒更新一次，视觉上仍然是即时反馈。
         if (Time.unscaledTime >= nextAffordabilityCheckTime)
         {
-            cachedAffordable =
-                buildingService.OwnerCanAfford(currentDefinition);
+            cachedAffordable = buildingService.OwnerCanAfford(currentDefinition);
             nextAffordabilityCheckTime = Time.unscaledTime + 0.1f;
         }
 
-        canPlace = validSurface && areaFree &&
-            withinPlayerDistance && cachedAffordable &&
-            !waitingForServer;
+        canPlace = validSurface && areaFree && withinPlayerDistance && cachedAffordable && !waitingForServer;
 
         currentPreview.SetPose(candidatePosition, candidateRotation);
         currentPreview.SetValid(canPlace);
@@ -501,14 +467,7 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
         }
 
         // 再做一次本地重叠检查，减少鼠标移动与点击之间的误差。
-        if (!BuildingPlacementValidator.IsAreaFree(
-                currentDefinition,
-                candidatePosition,
-                candidateRotation,
-                blockingLayers,
-                currentDefinition.pieceType == BuildingPieceType.Floor
-                    ? null
-                    : currentSupport))
+        if (!BuildingPlacementValidator.IsAreaFree(currentDefinition, candidatePosition, candidateRotation, blockingLayers, currentDefinition.pieceType == BuildingPieceType.Floor ? null : currentSupport))
         {
             ShowToast("位置刚刚被其他物体占用。");
             return;
@@ -518,9 +477,7 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
         canPlace = false;
         currentPreview.SetValid(false);
 
-        buildingService.RequestPlace(
-     currentDefinition,
-     candidatePosition,
+        buildingService.RequestPlace(currentDefinition, candidatePosition,
      // 只发送玩家按R产生的旋转。
      // Socket方向由服务器重新查找并组合。
      Quaternion.Euler(0f, currentYaw, 0f));
@@ -533,29 +490,18 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
             return;
         }
 
-        Ray ray = gameplayCamera.ScreenPointToRay(
-            Mouse.current.position.ReadValue());
+        Ray ray = gameplayCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
         NetworkPlacedBuilding newTarget = null;
 
-        if (Physics.Raycast(
-                ray,
-                out RaycastHit hit,
-                pointerRayDistance,
-                buildingLayers,
-                QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast( ray, out RaycastHit hit, pointerRayDistance,buildingLayers, QueryTriggerInteraction.Ignore))
         {
-            NetworkPlacedBuilding candidate =
-                hit.collider.GetComponentInParent<NetworkPlacedBuilding>();
+            NetworkPlacedBuilding candidate = hit.collider.GetComponentInParent<NetworkPlacedBuilding>();
 
             // 客户端只高亮自己建造的建筑；服务器还会再次验证所有权。
-            bool withinPlayerDistance = candidate != null &&
-    (candidate.transform.position - transform.position).sqrMagnitude <=
-    maxPlaceDistance * maxPlaceDistance;
+            bool withinPlayerDistance = candidate != null && (candidate.transform.position - transform.position).sqrMagnitude <= maxPlaceDistance * maxPlaceDistance;
 
-            if (candidate != null && candidate.IsSpawned &&
-                candidate.BuilderClientId == OwnerClientId &&
-                withinPlayerDistance)
+            if (candidate != null && candidate.IsSpawned && candidate.BuilderClientId == OwnerClientId && withinPlayerDistance)
             {
                 newTarget = candidate;
             }
@@ -566,23 +512,16 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
             return;
         }
 
-        demolishTarget = newTarget;
-        ClearDemolishPreview();
+        demolishTarget = newTarget; ClearDemolishPreview();
 
-        if (demolishTarget == null ||
-            demolishTarget.Definition == null ||
-            demolishTarget.Definition.previewPrefab == null)
+        if (demolishTarget == null || demolishTarget.Definition == null || demolishTarget.Definition.previewPrefab == null)
         {
             return;
         }
 
-        GameObject previewObject = Instantiate(
-            demolishTarget.Definition.previewPrefab,
-            demolishTarget.transform.position,
-            demolishTarget.transform.rotation);
+        GameObject previewObject = Instantiate( demolishTarget.Definition.previewPrefab, demolishTarget.transform.position, demolishTarget.transform.rotation);
 
-        demolishPreview =
-            previewObject.GetComponent<BuildingPreview>();
+        demolishPreview = previewObject.GetComponent<BuildingPreview>();
         demolishPreview?.SetValid(false);
     }
 
@@ -612,11 +551,9 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
 
     private BuildSurfaceType GetSurfaceType(RaycastHit hit)
     {
-        PlacedBuilding building =
-            hit.collider.GetComponentInParent<PlacedBuilding>();
+        PlacedBuilding building = hit.collider.GetComponentInParent<PlacedBuilding>();
 
-        if (building != null && building.Definition != null &&
-            building.Definition.pieceType == BuildingPieceType.Floor)
+        if (building != null && building.Definition != null && building.Definition.pieceType == BuildingPieceType.Floor)
         {
             return BuildSurfaceType.Floor;
         }
@@ -629,9 +566,7 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
         return BuildSurfaceType.None;
     }
 
-    private static Vector3 SnapPositionToGrid(
-        Vector3 position,
-        float gridSize)
+    private static Vector3 SnapPositionToGrid( Vector3 position, float gridSize)
     {
         if (gridSize <= 0f)
         {
@@ -654,9 +589,7 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
         // GameInputModeService 已经负责鼠标；这里再明确应用一次，
         // 防止网络玩家或相机刚Spawn时的OnEnable覆盖鼠标状态。
         Cursor.visible = buildMode;
-        Cursor.lockState = buildMode
-            ? CursorLockMode.None
-            : CursorLockMode.Locked;
+        Cursor.lockState = buildMode ? CursorLockMode.None : CursorLockMode.Locked;
     }
 
     private void ShowToast(string message)
@@ -691,9 +624,7 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
         demolishPreview = null;
     }
 
-    private static void EnableAction(
-        InputActionReference reference,
-        System.Action<InputAction.CallbackContext> callback)
+    private static void EnableAction( InputActionReference reference, System.Action<InputAction.CallbackContext> callback)
     {
         if (reference == null)
         {
@@ -704,9 +635,7 @@ public sealed class NetworkBuildPlacementController : NetworkBehaviour
         reference.action.performed += callback;
     }
 
-    private static void DisableAction(
-        InputActionReference reference,
-        System.Action<InputAction.CallbackContext> callback)
+    private static void DisableAction(InputActionReference reference,System.Action<InputAction.CallbackContext> callback)
     {
         if (reference == null)
         {

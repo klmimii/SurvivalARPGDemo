@@ -234,8 +234,7 @@ public class WeaponController : MonoBehaviour
             hasPendingProjectileTarget = true;
         }
 
-        animationController.PlayAttack(
-            pendingWeapon.weaponType);
+        animationController.PlayAttack(pendingWeapon.weaponType);
 
         AttackStarted?.Invoke(pendingWeapon.weaponType);
     }
