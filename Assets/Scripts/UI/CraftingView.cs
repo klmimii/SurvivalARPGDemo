@@ -12,27 +12,32 @@ public class CraftingView : MonoBehaviour
     private RecipeSlotView recipeSlotPrefab;//预先制作好的RecipeSlotView预制体，每次渲染时会拿他来实例化
     [SerializeField]
     private Button closeButton;//关闭界面的按钮
-    //用来记录当前界面里已经实例化的槽位视图列表，方便后续清理
+                               //用来记录当前界面里已经实例化的槽位视图列表，方便后续清理
+
+    private UIPanelTween panelTween;
+    public bool IsVisible => panelTween != null
+        ? panelTween.IsVisible
+        : gameObject.activeInHierarchy;
     private readonly List<RecipeSlotView> activeSlots = new List<RecipeSlotView>();
     //面板关闭时的C#事件
     public event Action Closed;
 
     //初始化时自动为关闭按钮绑定Close()方法
+
     private void Awake()
     {
+        panelTween = UIPanelTween.GetOrAdd(gameObject);
         closeButton.onClick.AddListener(Close);
     }
 
     public void Show()
     {
-        this.gameObject.SetActive(true);
-
+        UIPanelTween.GetOrAdd(gameObject).Show();
     }
 
     public void Close()
     {
-        this.gameObject.SetActive(false);
-        //对象失活仍然可以执行，失活后只有协程或者Unity生命周期事件（如Update,FixedUpdate）不执行，其他都会执行
+        UIPanelTween.GetOrAdd(gameObject).Hide();
         Closed?.Invoke();
     }
 
@@ -42,13 +47,13 @@ public class CraftingView : MonoBehaviour
     /// <param name="recipes">需要展示的所有配方数组</param>
     /// <param name="canCraft">是Unity内置的泛型委托，用来拿到材料够不够，第一个参数是接收参数类型，第二个是返回值类型</param>
     /// <param name="onCraft">点击制作时的回调函数</param>
-    public void Render(RecipeDefinition[] recipes,Func<RecipeDefinition,bool> canCraft,Action<RecipeDefinition> onCraft)
+    public void Render(RecipeDefinition[] recipes, Func<RecipeDefinition, bool> canCraft, Action<RecipeDefinition> onCraft)
     {
         //先调用ClearSlot清空旧槽位
         ClearSlots();
 
         //循环遍历配方
-        foreach(RecipeDefinition recipe in recipes)
+        foreach (RecipeDefinition recipe in recipes)
         {
             //实例化新槽位并挂在ContentRoot下
             RecipeSlotView slot = Instantiate(recipeSlotPrefab, contentRoot);
@@ -64,7 +69,7 @@ public class CraftingView : MonoBehaviour
     /// </summary>
     private void ClearSlots()
     {
-        foreach(RecipeSlotView slot in activeSlots)
+        foreach (RecipeSlotView slot in activeSlots)
         {
             Destroy(slot.gameObject);
         }

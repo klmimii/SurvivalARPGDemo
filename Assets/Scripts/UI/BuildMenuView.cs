@@ -25,6 +25,12 @@ public class BuildMenuView : MonoBehaviour
 
     public event Action<BuildingDefinition> DefinitionSelected;
     public event Action DemolishSelected;
+
+
+    private UIPanelTween panelTween;
+    public bool IsVisible => panelTween != null
+        ? panelTween.IsVisible
+        : panelRoot != null && panelRoot.activeInHierarchy;
     public event Action CloseSelected;
 
     private void Awake()
@@ -58,14 +64,33 @@ public class BuildMenuView : MonoBehaviour
         }
 
         // 场景一开始就隐藏，不再等待网络玩家生成。
-        SetVisible(false);
+        SetVisible(false, true);
     }
 
     public void SetVisible(bool visible)
     {
-        if (panelRoot != null)
+        SetVisible(visible, false);
+    }
+
+    private void SetVisible(bool visible, bool immediate)
+    {
+        if (panelRoot == null)
         {
-            panelRoot.SetActive(visible);
+            return;
+        }
+
+        panelTween = UIPanelTween.GetOrAdd(panelRoot);
+        if (visible)
+        {
+            panelTween.Show();
+        }
+        else if (immediate)
+        {
+            panelTween.HideImmediate();
+        }
+        else
+        {
+            panelTween.Hide();
         }
     }
 }

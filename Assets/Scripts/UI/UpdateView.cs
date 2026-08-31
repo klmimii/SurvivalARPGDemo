@@ -1,9 +1,14 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class UpdateView : MonoBehaviour
 {
+    private UIPanelTween panelTween;
+    public bool IsVisible => panelTween != null
+        ? panelTween.IsVisible
+        : gameObject.activeInHierarchy;
+
+
     [SerializeField] private TMP_Text statusText;
     [SerializeField] private TMP_Text progressText;
     [SerializeField] private Slider progressSlider;
@@ -21,10 +26,11 @@ public class UpdateView : MonoBehaviour
 
     public void Hide()
     {
-        gameObject.SetActive(false);
+        UIPanelTween.GetOrAdd(gameObject).Hide();
     }
     public void Show()
     {
-        gameObject.SetActive(true);
+        panelTween = UIPanelTween.GetOrAdd(gameObject);
+        panelTween.Show();
     }
 }

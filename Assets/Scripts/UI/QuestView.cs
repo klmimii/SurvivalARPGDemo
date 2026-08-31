@@ -10,24 +10,29 @@ public class QuestView : MonoBehaviour
     [SerializeField] private QuestSlotView slotPrefab;//单个格子的预设体
     [SerializeField] private Button closeButton;//关闭界面按钮
 
+
+    private UIPanelTween panelTween;
+    public bool IsVisible => panelTween != null
+        ? panelTween.IsVisible
+        : gameObject.activeInHierarchy;
     private readonly List<QuestSlotView> activeSlots = new List<QuestSlotView>();//当前正在显示的任务格子实例列表
     public event Action Closed;//界面关闭时触发的事件
 
     private void Awake()
     {
-        //在初始化的时候给关闭按钮绑定Click事件
+        panelTween = UIPanelTween.GetOrAdd(gameObject);
         closeButton.onClick.AddListener(Close);
     }
 
     public void Show()
     {
-        gameObject.SetActive(true);//打开任务窗口
+        UIPanelTween.GetOrAdd(gameObject).Show();
     }
 
     public void Close()
     {
-        gameObject.SetActive(false);//隐藏任务窗口
-        Closed?.Invoke();//广播通知：任务界面已关闭
+        UIPanelTween.GetOrAdd(gameObject).Hide();
+        Closed?.Invoke();
     }
 
     /// <summary>

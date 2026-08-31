@@ -27,28 +27,27 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private InputActionReference toggleSettingsAction; // 绑定的 Esc 快捷键动作
     [SerializeField] private AudioSettingsPresenter settingsPanel;                  // SettingsPanel 物体
-    [SerializeField] private Button settingsCloseButton;
 
+    [SerializeField] private Button settingsCloseButton;
+    private UIPanelTween settingsTween;
     private void Awake()
     {
-        //Awake阶段先默认隐藏背包
-        inventoryView.Hide();
+        inventoryView.HideImmediate();
         inventoryView.Closed += CloseInventory;
 
-        craftingView.gameObject.SetActive(false);
-        //因为合成使用按钮关闭的，所以给他加关闭事件
+        UIPanelTween.GetOrAdd(craftingView.gameObject).HideImmediate();
         craftingView.Closed += CloseCrafting;
 
-        questView.gameObject.SetActive(false);
+        UIPanelTween.GetOrAdd(questView.gameObject).HideImmediate();
         questView.Closed += CloseQuest;
 
-        npcDialogueView.gameObject.SetActive(false);
+        UIPanelTween.GetOrAdd(npcDialogueView.gameObject).HideImmediate();
         npcDialogueView.Closed += CloseNpcDialogue;
 
-        // 初始化时隐藏设置面板
         if (settingsPanel != null)
         {
-            settingsPanel.gameObject.SetActive(false);
+            settingsTween = UIPanelTween.GetOrAdd(settingsPanel.gameObject);
+            settingsTween.HideImmediate();
         }
 
         if (settingsCloseButton != null)
@@ -59,17 +58,14 @@ public class UIManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (inventoryView != null)
+        if (inventoryView != null) inventoryView.Closed -= CloseInventory;
+        if (craftingView != null) craftingView.Closed -= CloseCrafting;
+        if (questView != null) questView.Closed -= CloseQuest;
+        if (npcDialogueView != null) npcDialogueView.Closed -= CloseNpcDialogue;
+        if (settingsCloseButton != null)
         {
-            inventoryView.Closed -= CloseInventory;
+            settingsCloseButton.onClick.RemoveListener(CloseSettings);
         }
-
-        if (craftingView!=null)
-        {
-            craftingView.Closed -= CloseCrafting;
-        }
-
-        npcDialogueView.Closed -= CloseNpcDialogue;
     }
 
     private void OnEnable()
@@ -108,22 +104,10 @@ public class UIManager : MonoBehaviour
     /// <param name="context"></param>
     public void OnToggleInventory(InputAction.CallbackContext context)
     {
-        // UI 模式中按 B 只关闭背包；若打开的是制作页，不让 B 意外切到背包。
-        if (!isInventoryOpen && craftingView.gameObject.activeInHierarchy)
-        {
-            return;
-        }
+        if (!isInventoryOpen && craftingView.IsVisible) return;
 
-        //如果背包打开再按B，就关闭背包
-        if (isInventoryOpen)
-        {
-            CloseInventory();
-        }
-        //如果背包关闭状态，那就打开背包
-        else
-        {
-            OpenInventory();
-        }
+        if (isInventoryOpen) CloseInventory();
+        else OpenInventory();
     }
 
     /// <summary>
@@ -131,18 +115,14 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void OpenInventory()
     {
-        //如果合成界面是激活状态则直接返回
-        if (craftingView.gameObject.activeInHierarchy||questView.gameObject.activeInHierarchy||npcDialogueView.gameObject.activeInHierarchy)
+        if (craftingView.IsVisible || questView.IsVisible || npcDialogueView.IsVisible)
         {
             return;
         }
-        //将背包打开状态设为true
+
         isInventoryOpen = true;
-        //打开背包视图
         inventoryView.Show();
-        //刷新背包视图
         inventoryPresenter.Open();
-        //将输入模式设为UI模式
         GameBootstrap.InputMode.SetMode(GameInputMode.UI);
     }
 
@@ -166,7 +146,7 @@ public class UIManager : MonoBehaviour
     public void OpenCrafting()
     {
         //如果背包是打开状态，关闭背包
-        if(isInventoryOpen||questView.gameObject.activeInHierarchy||npcDialogueView.gameObject.activeInHierarchy)
+        if (isInventoryOpen || questView.gameObject.activeInHierarchy || npcDialogueView.gameObject.activeInHierarchy)
         {
             CloseInventory();
         }
@@ -185,8 +165,12 @@ public class UIManager : MonoBehaviour
 
     private void RestoreGameplayModeIfNoPageOpen()
     {
-        //如果背包和合成界面都没有打开，则设置模式为gameplay
-        if (!isInventoryOpen&& !craftingView.gameObject.activeInHierarchy&& !questView.gameObject.activeInHierarchy && !npcDialogueView.gameObject.activeInHierarchy! && !settingsPanel.gameObject.activeInHierarchy)
+        bool settingsOpen = settingsTween != null && settingsTween.IsVisible;
+        if (!isInventoryOpen &&
+            !craftingView.IsVisible &&
+            !questView.IsVisible &&
+            !npcDialogueView.IsVisible &&
+            !settingsOpen)
         {
             GameBootstrap.InputMode.SetMode(GameInputMode.Gameplay);
         }
@@ -194,19 +178,13 @@ public class UIManager : MonoBehaviour
 
     private void OnToggleQuest(InputAction.CallbackContext context)
     {
-        if (questView.gameObject.activeInHierarchy)
-        {
-            CloseQuest();
-        }
-        else
-        {
-            OpenQuest();
-        }
+        if (questView.IsVisible) CloseQuest();
+        else OpenQuest();
     }
 
     public void OpenQuest()
     {
-        if (isInventoryOpen || craftingView.gameObject.activeInHierarchy||npcDialogueView.gameObject.activeInHierarchy)
+        if (isInventoryOpen || craftingView.IsVisible || npcDialogueView.IsVisible)
         {
             return;
         }
@@ -217,9 +195,9 @@ public class UIManager : MonoBehaviour
 
     public void CloseQuest()
     {
-        if (questView.gameObject.activeInHierarchy)
+        if (questView.IsVisible)
         {
-            questView.gameObject.SetActive(false);
+            UIPanelTween.GetOrAdd(questView.gameObject).Hide();
         }
 
         RestoreGameplayModeIfNoPageOpen();
@@ -227,7 +205,7 @@ public class UIManager : MonoBehaviour
 
     public void OpenNpcDialogue(NpcQuestGiver npc)
     {
-        if (isInventoryOpen || craftingView.gameObject.activeInHierarchy || questView.gameObject.activeInHierarchy)
+        if (isInventoryOpen || craftingView.IsVisible || questView.IsVisible)
         {
             return;
         }
@@ -238,9 +216,9 @@ public class UIManager : MonoBehaviour
 
     public void CloseNpcDialogue()
     {
-        if (npcDialogueView.gameObject.activeInHierarchy)
+        if (npcDialogueView.IsVisible)
         {
-            npcDialogueView.gameObject.SetActive(false);
+            UIPanelTween.GetOrAdd(npcDialogueView.gameObject).Hide();
         }
 
         RestoreGameplayModeIfNoPageOpen();
@@ -248,37 +226,33 @@ public class UIManager : MonoBehaviour
 
     private void OnToggleSettings(InputAction.CallbackContext context)
     {
-        if (settingsPanel.gameObject.activeInHierarchy)
-        {
-            CloseSettings();
-        }
-        else
-        {
-            OpenSettings();
-        }
+        if (settingsTween != null && settingsTween.IsVisible) CloseSettings();
+        else OpenSettings();
     }
 
     public void OpenSettings()
     {
-        // 互斥判断：如果其他面板处于打开状态，不允许打开设置页
-        if (isInventoryOpen || craftingView.gameObject.activeInHierarchy || questView.gameObject.activeInHierarchy || npcDialogueView.gameObject.activeInHierarchy)
+        if (isInventoryOpen ||
+            craftingView.IsVisible ||
+            questView.IsVisible ||
+            npcDialogueView.IsVisible ||
+            settingsPanel == null)
         {
             return;
         }
 
-        settingsPanel.gameObject.SetActive(true);
-
+        settingsTween = UIPanelTween.GetOrAdd(settingsPanel.gameObject);
+        settingsTween.Show();
         GameBootstrap.InputMode.SetMode(GameInputMode.UI);
     }
 
     public void CloseSettings()
     {
-        if(settingsPanel.gameObject.activeInHierarchy)
+        if (settingsTween != null && settingsTween.IsVisible)
         {
-            settingsPanel.gameObject.SetActive(false);
+            settingsTween.Hide();
         }
 
-        
         RestoreGameplayModeIfNoPageOpen();
     }
 }

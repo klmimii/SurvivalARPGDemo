@@ -14,26 +14,33 @@ public class NpcDialogueView : MonoBehaviour
     [SerializeField] private Button closeButton;
 
     public event Action PrimaryClicked;
+
+
+    private UIPanelTween panelTween;
+    public bool IsVisible => panelTween != null
+        ? panelTween.IsVisible
+        : gameObject.activeInHierarchy;
     public event Action Closed;
 
     private void Awake()
     {
+        panelTween = UIPanelTween.GetOrAdd(gameObject);
         primaryButton.onClick.AddListener(() => PrimaryClicked?.Invoke());
         closeButton.onClick.AddListener(Close);
     }
 
     public void Show(string npcName, string content, string primaryText, bool showPrimaryButton)
     {
-        gameObject.SetActive(true);
         npcNameText.text = npcName;
         contentText.text = content;
         primaryButton.gameObject.SetActive(showPrimaryButton);
         primaryButtonText.text = primaryText;
+        UIPanelTween.GetOrAdd(gameObject).Show();
     }
 
     public void Close()
     {
-        gameObject.SetActive(false);
+        UIPanelTween.GetOrAdd(gameObject).Hide();
         Closed?.Invoke();
     }
 }

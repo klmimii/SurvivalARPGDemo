@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -13,39 +15,64 @@ public class ToastView : MonoBehaviour
     [SerializeField]
     private float showDuration = 1.5f;//提示框停在屏幕上的时间
 
-    //声明协程
-    private Coroutine hideCoroutine;
+    private CanvasGroup canvasGroup;
+    private RectTransform rectTransform;
+    private Vector2 basePosition;
+    private Sequence sequence;
 
     private void Awake()
     {
-        //原本写成gameObject.SetActive(fasle)这是不对的，因为相当于ToastView脚本在初始化阶段，把自己所在的GameObject关闭了，处于禁用重装
-        //而外部仍然持有ToastView引用，这时候外部调用Show函数，虽然ToastVIew被关闭里，但是引用还在，所以他仍然可以被调用。而Show中让自己被激活，但是自己本身就是被关闭的对象，此时尝试重新激活自己，生命周期状态发生变化，StartCoroutines时对象仍处于inactive
-        //导致协程启动失败，而第二次TosatText已经经历了一次Awake/Disable，Unity对象状态已经稳定
-        //总结：一个对象如果需要长期接收调用，比如Toast,Manager，Controller等等，不要隐藏自己而是控制组建的失活激活
+        rectTransform = toastText.rectTransform;
+        canvasGroup = toastText.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = toastText.gameObject.AddComponent<CanvasGroup>();
+        }
+
+        basePosition = rectTransform.anchoredPosition;
+        canvasGroup.alpha = 0f;
         toastText.enabled = false;
     }
 
     public void Show(string message)
     {
-        if (hideCoroutine != null)
-        {
-            StopCoroutine(hideCoroutine);
-        }
-
+        sequence?.Kill(false);
 
         toastText.text = message;
-
         toastText.enabled = true;
+        canvasGroup.alpha = 0f;
+        rectTransform.anchoredPosition = basePosition - new Vector2(0f, 18f);
+        rectTransform.localScale = Vector3.one * 0.9f;
 
-
-        hideCoroutine = StartCoroutine(HideAfterDelay());
+        sequence = DOTween.Sequence()
+            .SetUpdate(true)
+            .SetLink(gameObject, LinkBehaviour.KillOnDisable)
+            .Join(canvasGroup.DOFade(1f, 0.16f))
+            .Join(rectTransform.DOAnchorPos(basePosition, 0.22f).SetEase(Ease.OutCubic))
+            .Join(rectTransform.DOScale(1f, 0.22f).SetEase(Ease.OutBack))
+            .AppendInterval(showDuration)
+            .Append(canvasGroup.DOFade(0f, 0.2f).SetEase(Ease.InQuad))
+            .Join(rectTransform.DOAnchorPos(basePosition + new Vector2(0f, 16f), 0.2f))
+            .OnComplete(() =>
+            {
+                toastText.enabled = false;
+                rectTransform.anchoredPosition = basePosition;
+                rectTransform.localScale = Vector3.one;
+                sequence = null;
+            });
     }
 
-
-private IEnumerator HideAfterDelay()
+    private void OnDisable()
     {
-        yield return new WaitForSeconds(showDuration);//等待1.5秒
-        toastText.enabled = false;//隐藏UI
-        hideCoroutine = null;//清楚句柄标记
+        sequence?.Kill(false);
+        sequence = null;
+        if (toastText != null)
+        {
+            toastText.enabled = false;
+        }
     }
+
+
+
+
 }

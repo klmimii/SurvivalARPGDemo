@@ -313,6 +313,7 @@ GameObject:
   - component: {fileID: 1754744957771061301}
   - component: {fileID: 7508527204898084496}
   - component: {fileID: 5369951119000323266}
+  - component: {fileID: 58245359712056598}
   m_Layer: 5
   m_Name: InventorySlotView
   m_TagString: Untagged
@@ -411,6 +412,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &58245359712056598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7856701090062180220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4253ddaa564c744942d5b1b966a6dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.045
+  pressedScale: 0.94
+  duration: 0.1
 --- !u!1 &7951226921154769958
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,5 @@
+
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +10,8 @@ public class EnemyHealthBarWidget : MonoBehaviour
     [SerializeField] private Image fillImage;
 
     private int lastCurrent = -1;
+
+    private Tween fillTween;
     private int lastMax = -1;
 
     public void Activate()
@@ -35,17 +39,39 @@ public class EnemyHealthBarWidget : MonoBehaviour
             return;
         }
 
+        bool isFirstRefresh = lastCurrent < 0 || lastMax < 0;
         lastCurrent = current;
         lastMax = max;
 
-        fillImage.fillAmount = max > 0
+        float targetFill = max > 0
             ? Mathf.Clamp01((float)current / max)
             : 0f;
+
+        fillTween?.Kill(false);
+        if (isFirstRefresh)
+        {
+            fillImage.fillAmount = targetFill;
+            return;
+        }
+
+        fillTween = fillImage.DOFillAmount(targetFill, 0.18f)
+            .SetEase(Ease.OutQuad)
+            .SetUpdate(true)
+            .SetLink(gameObject, LinkBehaviour.KillOnDisable);
     }
 
     public void Deactivate()
     {
+        fillTween?.Kill(false);
+        fillTween = null;
         canvasGroup.alpha = 0f;
         gameObject.SetActive(false);
     }
+
+    private void OnDisable()
+    {
+        fillTween?.Kill(false);
+        fillTween = null;
+    }
+
 }

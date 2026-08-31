@@ -17,6 +17,13 @@
       },
       "hash": "4ce7dd3cc54e37e2ed6dc59cb5a047f3dccb3f50"
     },
+    "com.gameframex.unity.demigiant.dotween": {
+      "version": "https://github.com/gameframex/com.gameframex.unity.demigiant.dotween.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "012a12754dcc305b1395a080d6e1984a8534d4c1"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,

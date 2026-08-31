@@ -32,8 +32,15 @@ public class InventoryView : MonoBehaviour
     [Header("关闭按钮")]
     [SerializeField] private Button closeButton;
 
+
+
+    private UIPanelTween panelTween;
+
+    public bool IsVisible => panelTween != null
+        ? panelTween.IsVisible
+        : gameObject.activeInHierarchy;
     private readonly List<InventorySlotView> activeSlots =
-        new List<InventorySlotView>();
+            new List<InventorySlotView>();
 
     /// <summary>
     /// 左侧分类按钮点击后通知Presenter。
@@ -47,6 +54,7 @@ public class InventoryView : MonoBehaviour
 
     private void Awake()
     {
+        panelTween = UIPanelTween.GetOrAdd(gameObject);
         allButton.onClick.AddListener(SelectAll);
         woodButton.onClick.AddListener(SelectWood);
         plantButton.onClick.AddListener(SelectPlant);
@@ -57,7 +65,6 @@ public class InventoryView : MonoBehaviour
         buildingButton.onClick.AddListener(SelectBuilding);
         potionButton.onClick.AddListener(SelectPotion);
         closeButton.onClick.AddListener(RequestClose);
-
         ClearDetail();
     }
 
@@ -77,12 +84,17 @@ public class InventoryView : MonoBehaviour
 
     public void Show()
     {
-        gameObject.SetActive(true);
+        UIPanelTween.GetOrAdd(gameObject).Show();
     }
 
     public void Hide()
     {
-        gameObject.SetActive(false);
+        UIPanelTween.GetOrAdd(gameObject).Hide();
+    }
+
+    public void HideImmediate()
+    {
+        UIPanelTween.GetOrAdd(gameObject).HideImmediate();
     }
 
     /// <summary>
